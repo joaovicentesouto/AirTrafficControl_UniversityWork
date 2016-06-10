@@ -14,4 +14,7 @@ public class AviaoTurbo extends Aviao {
 	public void velocTurbo() {
 		super.setVelocidade(super.getVelocidade()*1.25);
 	}
+	
+	
+	
 }
