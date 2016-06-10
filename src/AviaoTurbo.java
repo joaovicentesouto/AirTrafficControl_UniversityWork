@@ -7,8 +7,8 @@ public class AviaoTurbo extends Aviao {
 		super();
 	}
 	
-	public AviaoTurbo(double velocidade, int combustivel, String direcaoVoo, int proximoX, int proximoY){
-		super(velocidade, combustivel, direcaoVoo, proximoX, proximoY);
+	public AviaoTurbo(String id, double velocidade, int combustivel, String direcaoVoo, int posicaoX, int posicaoY){
+		super(id, velocidade, combustivel, direcaoVoo, posicaoX, posicaoY);
 	}
 	
 	public void velocTurbo() {
