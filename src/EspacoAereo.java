@@ -3,7 +3,7 @@ import java.util.Random;
 public class EspacoAereo {
 
 	private Aviao[][] espacoAereo;
-	private int quantInicialAvioes;
+	private int quantTotalAvioes;
 	
 	public EspacoAereo() {
 		super();
@@ -11,12 +11,12 @@ public class EspacoAereo {
 	
 	public EspacoAereo(Aviao[][] espacoAereo) {
 		this.espacoAereo = espacoAereo;
-		quantInicialAvioes = 0;
+		quantTotalAvioes = 0;
 	}
 	
 	public EspacoAereo(int tamanhoX, int tamanhoY) {
 		espacoAereo = new Aviao[tamanhoX][tamanhoY];
-		quantInicialAvioes = 0;
+		quantTotalAvioes = 0;
 	}
 	
 	public Aviao[][] getEspacoAereo() {
@@ -322,12 +322,14 @@ public class EspacoAereo {
 			// Criando avião.
 			if(aviaoTurbo) {
 				// Criando o avião turbo e jogando ele na matriz (espaco aéreo).
-				AviaoTurbo av = new AviaoTurbo(("Av_" + (quantInicialAvioes+1)), 75, combustivelMax, direcaoFinalVoo, posicaoFinalX, posicaoFinalY, false);
+				AviaoTurbo av = new AviaoTurbo(("Av_" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoFinalVoo, posicaoFinalX, posicaoFinalY, false);
 				espacoAereo[posicaoFinalX][posicaoFinalY] = av;
+				quantTotalAvioes++;
 			} else {
 				// Criando o avião e jogando ele na matriz (espaco aéreo).
-				Aviao av = new Aviao(("Av_" + (quantInicialAvioes+1)), 75, combustivelMax, direcaoFinalVoo, posicaoFinalX, posicaoFinalY);
+				Aviao av = new Aviao(("Av_" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoFinalVoo, posicaoFinalX, posicaoFinalY);
 				espacoAereo[posicaoFinalX][posicaoFinalY] = av;
+				quantTotalAvioes++;
 			}
 		}
 	}
@@ -627,14 +629,74 @@ public class EspacoAereo {
 		// Criando avião.
 		if(aviaoTurbo) {
 			// Criando o avião turbo e jogando ele na matriz (espaco aéreo).
-			AviaoTurbo av = new AviaoTurbo(("Av_" + (quantInicialAvioes+1)), 75, combustivelMax, direcaoFinalVoo, posicaoFinalX, posicaoFinalY, false);
+			AviaoTurbo av = new AviaoTurbo(("Av_" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoFinalVoo, posicaoFinalX, posicaoFinalY, false);
 			espacoAereo[posicaoFinalX][posicaoFinalY] = av;
+			quantTotalAvioes++;
 		} else {
 			// Criando o avião e jogando ele na matriz (espaco aéreo).
-			Aviao av = new Aviao(("Av_" + (quantInicialAvioes+1)), 75, combustivelMax, direcaoFinalVoo, posicaoFinalX, posicaoFinalY);
+			Aviao av = new Aviao(("Av_" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoFinalVoo, posicaoFinalX, posicaoFinalY);
 			espacoAereo[posicaoFinalX][posicaoFinalY] = av;
+			quantTotalAvioes++;
 		}
 	}
 	
+	// Método para atualizar a próxima posição de todos os aviões.
+	public void proximaPosicaoTodos() {
+		// FOR pra percorrer a matriz todo, quando achar um avião, executa o método proximaPosicao() dele.
+		for(int i = 0; i < espacoAereo.length; i++) {
+			for(int j = 0; j < espacoAereo[0].length; j++) {
+				if(espacoAereo[i][j] != null) {
+					espacoAereo[i][j].proximaPosicao();
+				} else {
+					// Nothing.
+				}
+			}
+		}
+	}
+	
+	// Método para Atualizar o espaço aéreo.
+	public void atualizarEspacoAereo() {
+		// FOR para achar cada avião e joga-lo para a próxima posição, cuidando colisões.
+		for(int i = 0; i < espacoAereo.length; i++) {
+			for(int j = 0; j < espacoAereo[0].length; j++) {
+				if(espacoAereo[i][j] != null) { // Se encontrar o primeiro avião.
+					// FOR para comparar a próxima posição do avião com todas as outras próximas posições dos outros aviões.
+					for(int k = 0; k < espacoAereo.length; k++) {
+						for(int l = 0; l < espacoAereo[0].length; l++) {
+							
+							if(espacoAereo[k][l] != null) { // Se encontrar um segundo avião.
+								// Verifica colisão entre os dois aviões.
+								if((espacoAereo[i][j].getProximoX() == espacoAereo[k][l].getProximoX()) &&
+										(espacoAereo[i][j].getProximoY() == espacoAereo[k][l].getProximoY())) {
+									
+									// IF : compara a velocidade dos dois aviões.
+									if(espacoAereo[i][j].getVelocidade() >= espacoAereo[k][l].getVelocidade()) {
+										// Primeiro aviao aumenta a velocidade e vai pra próxima posição.
+										espacoAereo[i][j].setAvanca(true);
+										// Segunda avião fica parado.
+										espacoAereo[k][l].setAvanca(false);
+									} else {
+										// Não faz nada porque só me interessa a ação do primeiro avião
+										// Quando eu verificar o segundo como primeiro ele vai comparar as velocidade de novo
+										// e ver que é mais baixa deixando ele ainda parado.
+									}
+								} else {
+									
+								}
+							}
+						}
+					}
+				} else {
+					/*
+					espacoAereo[i][j].velocUp();
+					espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
+					espacoAereo[i][j] = null;
+					// Segunda avião fica parado.
+					espacoAereo[k][l].velocDown();
+					proximo, quando for atualiar mesmo........*/
+				}
+			}
+		}
+	}
 	
 }

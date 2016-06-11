@@ -4,7 +4,7 @@ public class Aviao {
 	private double velocidade;
 	private int combustivel, posicaoX, posicaoY, proximoX, proximoY;
 	private String id, direcaoVoo;
-	private boolean alertaCombustivel;
+	private boolean alertaCombustivel, avanca;
 
 	public Aviao() { // Construtor sem parametros.
 		super();
@@ -21,6 +21,7 @@ public class Aviao {
 		proximoX = 0;
 		proximoY = 0;
 		alertaCombustivel = false;
+		avanca = true;
 	}
 
 	// Getters e setters.
@@ -62,6 +63,14 @@ public class Aviao {
 	
 	public void setAlertaCombustivel(boolean alertaCombustivel) {
 		this.alertaCombustivel = alertaCombustivel;
+	}
+	
+	public boolean getAvanca() {
+		return avanca;
+	}
+	
+	public void setAvanca(boolean avanca) {
+		this.avanca = avanca;
 	}
 
 	// Getters e setters: Posições atuais.
