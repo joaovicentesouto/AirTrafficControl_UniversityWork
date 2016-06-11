@@ -656,7 +656,33 @@ public class EspacoAereo {
 	
 	// Método para Atualizar o espaço aéreo.
 	public void atualizarEspacoAereo() {
-		// FOR para achar cada avião e joga-lo para a próxima posição, cuidando colisões.
+		
+		// Atualiza todos para avanca(PODE AVANÇAR). Toda vez que executar esse método todos os aviões tem que estar
+		// prontos para avançar pq ele a seguir só altera se houver colisão. Logo se não houver e estiver como FIQUE PARADO
+		// o avião não avançaria mesmo podendo.
+		for(int i = 0; i < espacoAereo.length; i++) {
+			for(int j = 0; j < espacoAereo[0].length; j++) {
+				if(espacoAereo[i][j] != null) { // Se existir um avião nessa posição.
+
+					// SWITCH : usado para verificar o avanca e fazer as atualizações.
+					switch(espacoAereo[i][j].getAvanca()) {
+					case "Avança, sem restrições" : 
+						// Não precisa alterar nada.
+						break;
+					case "Avança e aumenta a velocidade." :
+						espacoAereo[i][j].setAvanca("Avança, sem restrições");
+						break;
+					case "Fica parado e diminui a velocidade." : 
+						espacoAereo[i][j].setAvanca("Avança, sem restrições");
+						break;
+					}
+				} else {
+					// Nada.
+				}
+			}
+		}
+		
+		// FOR para achar cada avião e verificar se ele pode avançar ou não.
 		for(int i = 0; i < espacoAereo.length; i++) {
 			for(int j = 0; j < espacoAereo[0].length; j++) {
 				if(espacoAereo[i][j] != null) { // Se encontrar o primeiro avião.
@@ -671,29 +697,60 @@ public class EspacoAereo {
 									
 									// IF : compara a velocidade dos dois aviões.
 									if(espacoAereo[i][j].getVelocidade() >= espacoAereo[k][l].getVelocidade()) {
-										// Primeiro aviao aumenta a velocidade e vai pra próxima posição.
-										espacoAereo[i][j].setAvanca(true);
+										// Primeiro avião avança.
+										espacoAereo[i][j].setAvanca("Avança e aumenta a velocidade.");
 										// Segunda avião fica parado.
-										espacoAereo[k][l].setAvanca(false);
+										espacoAereo[k][l].setAvanca("Fica parado e diminui a velocidade.");
 									} else {
-										// Não faz nada porque só me interessa a ação do primeiro avião
-										// Quando eu verificar o segundo como primeiro ele vai comparar as velocidade de novo
-										// e ver que é mais baixa deixando ele ainda parado.
+										// Segundo avião avança.
+										espacoAereo[k][l].setAvanca("Avança e aumenta a velocidade.");
+										// Primeiro avião fica parado.
+										espacoAereo[i][j].setAvanca("Fica parado e diminui a velocidade.");
 									}
 								} else {
-									
+									// Nada porque ele não precisa mudar nada se os aviões não forem colidir.
 								}
+							} else {
+								// Não faz nada porque não achou nenhum avião.
 							}
 						}
 					}
 				} else {
-					/*
-					espacoAereo[i][j].velocUp();
-					espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
-					espacoAereo[i][j] = null;
-					// Segunda avião fica parado.
-					espacoAereo[k][l].velocDown();
-					proximo, quando for atualiar mesmo........*/
+					// Não faz nada porque não achou nenhum avião.
+				}
+			}
+		}
+		
+		// Agora atualizamos as posições nos baseando no atributo avanca de cada avião.
+		for(int i = 0; i < espacoAereo.length; i++) {
+			for(int j = 0; j < espacoAereo[0].length; j++) {
+				if(espacoAereo[i][j] != null) { // Se existir um avião nessa posição.
+					
+					// SWITCH : usado para verificar o avanca e fazer as atualizações.
+					switch(espacoAereo[i][j].getAvanca()) {
+					case "Avança, sem restrições" : 
+						espacoAereo[i][j].consumoCombustivel();
+						break;
+					case "Avança e aumenta a velocidade." :
+						espacoAereo[i][j].velocUp();
+						espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
+						espacoAereo[i][j] = null;
+						break;
+					case "Fica parado e diminui a velocidade." : 
+						espacoAereo[i][j].velocDown();
+						break;
+					}
+				} else {
+					// Nada.
+				}
+			}
+		}
+		
+		// Atualizar a próxima posição de cada avião.
+		for(int i = 0; i < espacoAereo.length; i++) {
+			for(int j = 0; j < espacoAereo[0].length; j++) {
+				if(espacoAereo[i][j] != null){
+					espacoAereo[i][j].proximaPosicao();
 				}
 			}
 		}
