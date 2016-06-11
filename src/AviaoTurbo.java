@@ -7,8 +7,9 @@ public class AviaoTurbo extends Aviao {
 		super();
 	}
 
-	public AviaoTurbo(String id, double velocidade, int combustivel, String direcaoVoo, int posicaoX, int posicaoY){
+	public AviaoTurbo(String id, double velocidade, int combustivel, String direcaoVoo, int posicaoX, int posicaoY, boolean turboLigado){
 		super(id, velocidade, combustivel, direcaoVoo, posicaoX, posicaoY);
+		this.turboLigado = turboLigado;
 	}
 
 	public boolean getTurboLigado() {

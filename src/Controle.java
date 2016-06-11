@@ -1,3 +1,4 @@
+import java.util.Random;
 
 public class Controle {
 
@@ -5,7 +6,7 @@ public class Controle {
 		// TODO Auto-generated method stub
 
 		// Descobrir se um objeto é de uma determinada claase = instanceof = if(bichos[i] instanceof Vaca)
-
+		
 	}
 
 }
