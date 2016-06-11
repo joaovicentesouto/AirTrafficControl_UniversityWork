@@ -4,6 +4,7 @@ public class Aviao {
 	private double velocidade;
 	private int combustivel, posicaoX, posicaoY, proximoX, proximoY;
 	private String id, direcaoVoo;
+	private boolean alertaCombustivel;
 
 	public Aviao() { // Construtor sem parametros.
 		super();
@@ -19,6 +20,7 @@ public class Aviao {
 		this.posicaoY = posicaoY;
 		proximoX = 0;
 		proximoY = 0;
+		alertaCombustivel = false;
 	}
 
 	// Getters e setters.
@@ -52,6 +54,14 @@ public class Aviao {
 
 	public void setDirecaoVoo(String direcaoVoo) {
 		this.direcaoVoo = direcaoVoo;
+	}
+	
+	public boolean getAlertaCombustivel() {
+		return alertaCombustivel;
+	}
+	
+	public void setAlertaCombustivel(boolean alertaCombustivel) {
+		this.alertaCombustivel = alertaCombustivel;
 	}
 
 	// Getters e setters: Posições atuais.
@@ -88,15 +98,16 @@ public class Aviao {
 		this.proximoY = proximoY;
 	}
 
+	// Método para encontrar a próxima posição. Executado sempre que o avião for mudado para outra posição.
 	public void proximaPosicao() {
 		switch (this.direcaoVoo) {
 		case "dc" :
-			proximoX = posicaoX-1;
-			proximoY = posicaoY-1;
-			break;
-		case "dd" :
 			proximoX = posicaoX+1;
 			proximoY = posicaoY+1;
+			break;
+		case "dd" :
+			proximoX = posicaoX-1;
+			proximoY = posicaoY-1;
 			break;
 		case "rvc" :
 			proximoX = posicaoX;
@@ -117,5 +128,41 @@ public class Aviao {
 		default : break;
 		}
 	}
-
+	
+	// Método para almentar a velocidade em 15%
+	public void velocUp() {
+		if(velocidade <= 100) {
+			if((velocidade*1.15) > 100) {
+				velocidade = 100;
+			} else {
+				velocidade *= 1.15;
+			}
+		} else {
+			// Não faz nada, a velocidade já está no máximo. 
+		}
+	}
+	
+	// Método para diminuir a velocidade em 15%
+	public void velocDown() {
+		if(velocidade >= 10) {
+			if((velocidade*0.85) < 10) {
+				velocidade = 10;
+			} else {
+				velocidade *= 0.85;
+			}
+		} else {
+			// Não faz nada, a velocidade já está no minimo.
+		}
+	}
+	
+	// Método consumo do combustível.
+	public void consumoCombustivel() {
+		combustivel--;
+		if(combustivel <= 10) {
+			alertaCombustivel = true;
+		}
+	}
+	
+	
+	
 }

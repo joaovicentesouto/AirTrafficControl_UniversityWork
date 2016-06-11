@@ -23,6 +23,6 @@ public class EspacoAereo {
 		return espacoAereo[posicaoX][posicaoY];
 	}
 	
-	// Método para generalizar a locomoção do avião. Pega a direcão do avião e define a proxima posicao --- FAZER ISSO NO ESPAÇO AEREO.
+	// 
 	
 }
