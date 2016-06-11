@@ -101,27 +101,27 @@ public class Aviao {
 	// Método para encontrar a próxima posição. Executado sempre que o avião for mudado para outra posição.
 	public void proximaPosicao() {
 		switch (this.direcaoVoo) {
-		case "dc" :
+		case "DC" :
 			proximoX = posicaoX+1;
 			proximoY = posicaoY+1;
 			break;
-		case "dd" :
+		case "DD" :
 			proximoX = posicaoX-1;
 			proximoY = posicaoY-1;
 			break;
-		case "rvc" :
+		case "RVC" :
 			proximoX = posicaoX;
 			proximoY = posicaoY+1;
 			break;
-		case "rvd" :
+		case "RVD" :
 			proximoX = posicaoX;
 			proximoY = posicaoY-1;
 			break;
-		case "rhc" :
+		case "RHC" :
 			proximoX = posicaoX+1;
 			proximoY = posicaoY;
 			break;
-		case "rhd" :
+		case "RHD" :
 			proximoX = posicaoX-1;
 			proximoY = posicaoY;
 			break;

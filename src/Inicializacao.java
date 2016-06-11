@@ -1,7 +1,7 @@
 
 public class Inicializacao {
 
-	String[] direcaoVoo = {"dc", "dd", "rvc", "rvd", "rhc", "rhd"};
+	String[] direcaoVoo = {"DC", "DD", "RVC", "RVD", "RHC", "RHD"};
 	
 	public Inicializacao() {
 		super();
