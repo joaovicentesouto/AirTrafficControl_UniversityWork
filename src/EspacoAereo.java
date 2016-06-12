@@ -27,12 +27,13 @@ public class EspacoAereo {
 		return espacoAereo[posicaoX][posicaoY];
 	}
 	
-	// Método complementar : achar um avião na verdical.
+	// Método complementar levantandoVoo(): achar um avião na verdical.
 	private boolean aviaoNaVertical(int coluna) {
 		boolean achei = false;
 		for(int i = 0; i < espacoAereo.length; i++) {
 			if(espacoAereo[i][coluna] != null) {
 				achei = true;
+				break;
 			} else {
 				// Não faz nada.
 			}
@@ -40,12 +41,13 @@ public class EspacoAereo {
 		return achei;
 	}
 	
-	// Método complementar : achar um avião na verdical.
+	// Método complementar levantandoVoo(): achar um avião na horizontal.
 	private boolean aviaoNaHorizontal(int linha) {
 		boolean achei = false;
 		for(int i = 0; i < espacoAereo.length; i++) {
 			if(espacoAereo[linha][i] != null) {
 				achei = true;
+				break;
 			} else {
 				// Não faz nada.
 			}
@@ -53,33 +55,43 @@ public class EspacoAereo {
 		return achei;
 	}
 	
-	// Método complementar : achar um avião na verdical.
+	// Método complementar levantandoVoo(): achar um avião na diagonal.
 	private boolean aviaoNaDiagonal(int linha, int coluna) {
 		boolean achei = false;
-		int count1 = 0, count2 = 0;
+		int contaLinha = 0, contaColuna = 0;
 		if(linha <= coluna) {
-			count1 = 0;
-			count2 = coluna-linha;
-			for(int i = 0; i < espacoAereo.length; i++) {
-				if(espacoAereo[count1][count2] != null) {
-					achei = true;
+			contaLinha = 0;
+			contaColuna = coluna-linha;
+			for(int i = coluna-linha; i < espacoAereo[0].length; i++) {
+				if((contaLinha < espacoAereo.length) || (contaColuna < espacoAereo[0].length)) {
+					if(espacoAereo[contaLinha][contaColuna] != null) {
+						achei = true;
+						break;
+					} else {
+						// Não faz nada.
+					}
 				} else {
 					// Não faz nada.
 				}
-				count1++;
-				count2++;
+				contaLinha++;
+				contaColuna++;
 			}	
 		} else {
-			count1 = linha-coluna;
-			count2 = 0;
+			contaLinha = linha-coluna;
+			contaColuna = 0;
 			for(int i = linha-coluna; i < espacoAereo.length; i++) {
-				if(espacoAereo[count1][count2] != null) {
-					achei = true;
+				if((contaLinha < espacoAereo.length) || (contaColuna < espacoAereo[0].length)) {
+					if(espacoAereo[contaLinha][contaColuna] != null) {
+						achei = true;
+						break;
+					} else {
+						// Não faz nada.
+					}
 				} else {
 					// Não faz nada.
 				}
-				count1++;
-				count2++;
+				contaLinha++;
+				contaColuna++;
 			}
 		}
 		return achei;
@@ -105,127 +117,75 @@ public class EspacoAereo {
 					int possivelPosicaoY = gerador.nextInt(espacoAereo[0].length);
 					switch(direcaoPossivelVoo) {
 					case "DC" :
-						if(possivelPosicaoX <= possivelPosicaoY) { // Esse IF verifica qual é maior para definir qual vai ser a posicao inicial da rota.
-							
-							for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) { // FOR varre a diagonal procurando um avião.
-								for(int inicioRotaY = possivelPosicaoY-possivelPosicaoX; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-									if(espacoAereo[inicioRotaX][inicioRotaY] != null) { // caso ele ache um avião a rota está ocupada e ele para de procurar.
-										rotaOcupada = true;
-										break;
-									} else { // caso todas as posicões estejam vazias ele, ele termina com a rota false e passa adiante a posicao.
-										rotaOcupada = false;
-										aviaoTurbo = false;
-										posicaoFinalX = possivelPosicaoX;
-										posicaoFinalY = possivelPosicaoY;
-										direcaoFinalVoo = direcaoPossivelVoo;
-									}
-								}
-							}
-						} else {
-							for(int inicioRotaX = possivelPosicaoX-possivelPosicaoY; inicioRotaX < espacoAereo.length; inicioRotaX++) { // Mesma coisa do outro FOR
-								for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-									if(espacoAereo[inicioRotaX][inicioRotaY] != null) {
-										rotaOcupada = true;
-										break;
-									} else {
-										rotaOcupada = false;
-										aviaoTurbo = false;
-										posicaoFinalX = possivelPosicaoX;
-										posicaoFinalY = possivelPosicaoY;
-										direcaoFinalVoo = direcaoPossivelVoo;
-									}
-								}
-							}
+						if(aviaoNaDiagonal(possivelPosicaoX, possivelPosicaoY)) { // Esse IF verifica qual é maior para definir qual vai ser a posicao inicial da rota.
+							rotaOcupada = true;
+							break;
+						} else { // caso todas as posicões estejam vazias ele, ele termina com a rota false e passa adiante a posicao.
+							rotaOcupada = false;
+							aviaoTurbo = false;
+							posicaoFinalX = possivelPosicaoX;
+							posicaoFinalY = possivelPosicaoY;
+							direcaoFinalVoo = direcaoPossivelVoo;
 						}
 						break;
 					case "DD" :
-						if(possivelPosicaoX <= possivelPosicaoY) { // Mesma lógica para a diagonal crescente
-							
-							for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-								for(int inicioRotaY = possivelPosicaoY-possivelPosicaoX; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-									if(espacoAereo[inicioRotaX][inicioRotaY] != null) {
-										rotaOcupada = true;
-										break;
-									} else {
-										rotaOcupada = false;
-										aviaoTurbo = false;
-										posicaoFinalX = possivelPosicaoX;
-										posicaoFinalY = possivelPosicaoY;
-										direcaoFinalVoo = direcaoPossivelVoo;
-									}
-								}
-							}
+						if(aviaoNaDiagonal(possivelPosicaoX, possivelPosicaoY)) { // Mesma lógica para a diagonal crescente
+							rotaOcupada = true;
+							break;
 						} else {
-							for(int inicioRotaX = possivelPosicaoX-possivelPosicaoY; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-								for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-									if(espacoAereo[inicioRotaX][inicioRotaY] != null) {
-										rotaOcupada = true;
-										break;
-									} else {
-										rotaOcupada = false;
-										aviaoTurbo = false;
-										posicaoFinalX = possivelPosicaoX;
-										posicaoFinalY = possivelPosicaoY;
-										direcaoFinalVoo = direcaoPossivelVoo;
-									}
-								}
-							}
+							rotaOcupada = false;
+							aviaoTurbo = false;
+							posicaoFinalX = possivelPosicaoX;
+							posicaoFinalY = possivelPosicaoY;
+							direcaoFinalVoo = direcaoPossivelVoo;
 						}
 						break;
 					case "RVC" : // FOR : varrer uma coluna para descobrir se a rota está vazia.
-						for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-							if(espacoAereo[inicioRotaX][possivelPosicaoY] != null) {
-								rotaOcupada = true;
-								break;
-							} else {
-								rotaOcupada = false;
-								aviaoTurbo = false;
-								posicaoFinalX = possivelPosicaoX;
-								posicaoFinalY = possivelPosicaoY;
-								direcaoFinalVoo = direcaoPossivelVoo;
-							}
+						if(aviaoNaVertical(possivelPosicaoY)) {
+							rotaOcupada = true;
+							break;
+						} else {
+							rotaOcupada = false;
+							aviaoTurbo = false;
+							posicaoFinalX = possivelPosicaoX;
+							posicaoFinalY = possivelPosicaoY;
+							direcaoFinalVoo = direcaoPossivelVoo;
 						}
 						break;
 					case "RVD" : // Mesma coisa do RVD.
-						for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-							if(espacoAereo[inicioRotaX][possivelPosicaoY] != null) {
-								rotaOcupada = true;
-								break;
-							} else {
-								rotaOcupada = false;
-								aviaoTurbo = false;
-								posicaoFinalX = possivelPosicaoX;
-								posicaoFinalY = possivelPosicaoY;
-								direcaoFinalVoo = direcaoPossivelVoo;
-							}
+						if(aviaoNaVertical(possivelPosicaoY)) {
+							rotaOcupada = true;
+							break;
+						} else {
+							rotaOcupada = false;
+							aviaoTurbo = false;
+							posicaoFinalX = possivelPosicaoX;
+							posicaoFinalY = possivelPosicaoY;
+							direcaoFinalVoo = direcaoPossivelVoo;
 						}
 						break;
 					case "RHC" : // FOR : varrer uma linha para descobrir se a rota está vazia.
-						for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-							if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
-								rotaOcupada = true;
-								break;
-							} else {
-								rotaOcupada = false;
-								aviaoTurbo = false;
-								posicaoFinalX = possivelPosicaoX;
-								posicaoFinalY = possivelPosicaoY;
-								direcaoFinalVoo = direcaoPossivelVoo;
-							}
+						if(aviaoNaHorizontal(possivelPosicaoX)) {
+							rotaOcupada = true;
+							break;
+						} else {
+							rotaOcupada = false;
+							aviaoTurbo = false;
+							posicaoFinalX = possivelPosicaoX;
+							posicaoFinalY = possivelPosicaoY;
+							direcaoFinalVoo = direcaoPossivelVoo;
 						}
 						break;
 					case "RHD" : // Mesca coisa do RHD.
-						for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-							if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
-								rotaOcupada = true;
-								break;
-							} else {
-								rotaOcupada = false;
-								aviaoTurbo = false;
-								posicaoFinalX = possivelPosicaoX;
-								posicaoFinalY = possivelPosicaoY;
-								direcaoFinalVoo = direcaoPossivelVoo;
-							}
+						if(aviaoNaHorizontal(possivelPosicaoX)) {
+							rotaOcupada = true;
+							break;
+						} else {
+							rotaOcupada = false;
+							aviaoTurbo = false;
+							posicaoFinalX = possivelPosicaoX;
+							posicaoFinalY = possivelPosicaoY;
+							direcaoFinalVoo = direcaoPossivelVoo;
 						}
 						break;
 					default : break;
@@ -239,127 +199,75 @@ public class EspacoAereo {
 					int possivelPosicaoY = gerador.nextInt(espacoAereo[0].length);
 					switch(direcaoPossivelVoo) {
 					case "DC" :
-						if(possivelPosicaoX <= possivelPosicaoY) { // Esse IF verifica qual é maior para definir qual vai ser a posicao inicial da rota.
-							
-							for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) { // FOR varre a diagonal procurando um avião.
-								for(int inicioRotaY = possivelPosicaoY-possivelPosicaoX; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-									if(espacoAereo[inicioRotaX][inicioRotaY] != null) { // caso ele ache um avião a rota está ocupada e ele para de procurar.
-										rotaOcupada = true;
-										break;
-									} else { // caso todas as posicões estejam vazias ele, ele termina com a rota false e passa adiante a posicao.
-										rotaOcupada = false;
-										aviaoTurbo = true;
-										posicaoFinalX = possivelPosicaoX;
-										posicaoFinalY = possivelPosicaoY;
-										direcaoFinalVoo = direcaoPossivelVoo;
-									}
-								}
-							}
-						} else {
-							for(int inicioRotaX = possivelPosicaoX-possivelPosicaoY; inicioRotaX < espacoAereo.length; inicioRotaX++) { // Mesma coisa do outro FOR
-								for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-									if(espacoAereo[inicioRotaX][inicioRotaY] != null) {
-										rotaOcupada = true;
-										break;
-									} else {
-										rotaOcupada = false;
-										aviaoTurbo = true;
-										posicaoFinalX = possivelPosicaoX;
-										posicaoFinalY = possivelPosicaoY;
-										direcaoFinalVoo = direcaoPossivelVoo;
-									}
-								}
-							}
+						if(aviaoNaDiagonal(possivelPosicaoX, possivelPosicaoY)) { // Esse IF verifica qual é maior para definir qual vai ser a posicao inicial da rota.
+							rotaOcupada = true;
+							break;
+						} else { // caso todas as posicões estejam vazias ele, ele termina com a rota false e passa adiante a posicao.
+							rotaOcupada = false;
+							aviaoTurbo = true;
+							posicaoFinalX = possivelPosicaoX;
+							posicaoFinalY = possivelPosicaoY;
+							direcaoFinalVoo = direcaoPossivelVoo;
 						}
 						break;
 					case "DD" :
-						if(possivelPosicaoX <= possivelPosicaoY) { // Mesma lógica para a diagonal crescente
-							
-							for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-								for(int inicioRotaY = possivelPosicaoY-possivelPosicaoX; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-									if(espacoAereo[inicioRotaX][inicioRotaY] != null) {
-										rotaOcupada = true;
-										break;
-									} else {
-										rotaOcupada = false;
-										aviaoTurbo = true;
-										posicaoFinalX = possivelPosicaoX;
-										posicaoFinalY = possivelPosicaoY;
-										direcaoFinalVoo = direcaoPossivelVoo;
-									}
-								}
-							}
+						if(aviaoNaDiagonal(possivelPosicaoX, possivelPosicaoY)) { // Mesma lógica para a diagonal crescente
+							rotaOcupada = true;
+							break;
 						} else {
-							for(int inicioRotaX = possivelPosicaoX-possivelPosicaoY; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-								for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-									if(espacoAereo[inicioRotaX][inicioRotaY] != null) {
-										rotaOcupada = true;
-										break;
-									} else {
-										rotaOcupada = false;
-										aviaoTurbo = true;
-										posicaoFinalX = possivelPosicaoX;
-										posicaoFinalY = possivelPosicaoY;
-										direcaoFinalVoo = direcaoPossivelVoo;
-									}
-								}
-							}
+							rotaOcupada = false;
+							aviaoTurbo = true;
+							posicaoFinalX = possivelPosicaoX;
+							posicaoFinalY = possivelPosicaoY;
+							direcaoFinalVoo = direcaoPossivelVoo;
 						}
 						break;
 					case "RVC" : // FOR : varrer uma coluna para descobrir se a rota está vazia.
-						for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-							if(espacoAereo[inicioRotaX][possivelPosicaoY] != null) {
-								rotaOcupada = true;
-								break;
-							} else {
-								rotaOcupada = false;
-								aviaoTurbo = true;
-								posicaoFinalX = possivelPosicaoX;
-								posicaoFinalY = possivelPosicaoY;
-								direcaoFinalVoo = direcaoPossivelVoo;
-							}
+						if(aviaoNaVertical(possivelPosicaoY)) {
+							rotaOcupada = true;
+							break;
+						} else {
+							rotaOcupada = false;
+							aviaoTurbo = true;
+							posicaoFinalX = possivelPosicaoX;
+							posicaoFinalY = possivelPosicaoY;
+							direcaoFinalVoo = direcaoPossivelVoo;
 						}
 						break;
 					case "RVD" : // Mesma coisa do RVD.
-						for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-							if(espacoAereo[inicioRotaX][possivelPosicaoY] != null) {
-								rotaOcupada = true;
-								break;
-							} else {
-								rotaOcupada = false;
-								aviaoTurbo = true;
-								posicaoFinalX = possivelPosicaoX;
-								posicaoFinalY = possivelPosicaoY;
-								direcaoFinalVoo = direcaoPossivelVoo;
-							}
+						if(aviaoNaVertical(possivelPosicaoY)) {
+							rotaOcupada = true;
+							break;
+						} else {
+							rotaOcupada = false;
+							aviaoTurbo = true;
+							posicaoFinalX = possivelPosicaoX;
+							posicaoFinalY = possivelPosicaoY;
+							direcaoFinalVoo = direcaoPossivelVoo;
 						}
 						break;
 					case "RHC" : // FOR : varrer uma linha para descobrir se a rota está vazia.
-						for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-							if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
-								rotaOcupada = true;
-								break;
-							} else {
-								rotaOcupada = false;
-								aviaoTurbo = true;
-								posicaoFinalX = possivelPosicaoX;
-								posicaoFinalY = possivelPosicaoY;
-								direcaoFinalVoo = direcaoPossivelVoo;
-							}
+						if(aviaoNaHorizontal(possivelPosicaoX)) {
+							rotaOcupada = true;
+							break;
+						} else {
+							rotaOcupada = false;
+							aviaoTurbo = true;
+							posicaoFinalX = possivelPosicaoX;
+							posicaoFinalY = possivelPosicaoY;
+							direcaoFinalVoo = direcaoPossivelVoo;
 						}
 						break;
 					case "RHD" : // Mesca coisa do RHD.
-						for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-							if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
-								rotaOcupada = true;
-								break;
-							} else {
-								rotaOcupada = false;
-								aviaoTurbo = true;
-								posicaoFinalX = possivelPosicaoX;
-								posicaoFinalY = possivelPosicaoY;
-								direcaoFinalVoo = direcaoPossivelVoo;
-							}
+						if(aviaoNaHorizontal(possivelPosicaoX)) {
+							rotaOcupada = true;
+							break;
+						} else {
+							rotaOcupada = false;
+							aviaoTurbo = true;
+							posicaoFinalX = possivelPosicaoX;
+							posicaoFinalY = possivelPosicaoY;
+							direcaoFinalVoo = direcaoPossivelVoo;
 						}
 						break;
 					default : break;
@@ -411,127 +319,75 @@ public class EspacoAereo {
 				
 				switch(direcaoPossivelVoo) {
 				case "DC" :
-					if(possivelPosicaoX <= possivelPosicaoY) {
-
-						for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-							for(int inicioRotaY = possivelPosicaoY-possivelPosicaoX; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-								if(espacoAereo[inicioRotaX][inicioRotaY] != null) {
-									rotaOcupada = true;
-									break;
-								} else {
-									rotaOcupada = false;
-									aviaoTurbo = false;
-									posicaoFinalX = 0;
-									posicaoFinalY = possivelPosicaoY-possivelPosicaoX;
-									direcaoFinalVoo = direcaoPossivelVoo;
-								}
-							}
-						}
-					} else {
-						for(int inicioRotaX = possivelPosicaoX-possivelPosicaoY; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-							for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-								if(espacoAereo[inicioRotaX][inicioRotaY] != null) {
-									rotaOcupada = true;
-									break;
-								} else {
-									rotaOcupada = false;
-									aviaoTurbo = false;
-									posicaoFinalX = possivelPosicaoX-possivelPosicaoY;
-									posicaoFinalY = 0;
-									direcaoFinalVoo = direcaoPossivelVoo;
-								}
-							}
-						}
+					if(aviaoNaDiagonal(possivelPosicaoX, possivelPosicaoY)) { // Esse IF verifica qual é maior para definir qual vai ser a posicao inicial da rota.
+						rotaOcupada = true;
+						break;
+					} else { // caso todas as posicões estejam vazias ele, ele termina com a rota false e passa adiante a posicao.
+						rotaOcupada = false;
+						aviaoTurbo = false;
+						posicaoFinalX = possivelPosicaoX;
+						posicaoFinalY = possivelPosicaoY;
+						direcaoFinalVoo = direcaoPossivelVoo;
 					}
 					break;
 				case "DD" :
-					if((espacoAereo.length-possivelPosicaoX) <= (espacoAereo[0].length-possivelPosicaoY)) {
-
-						for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-							for(int inicioRotaY = possivelPosicaoY-possivelPosicaoX; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-								if(espacoAereo[inicioRotaX][inicioRotaY] != null) {
-									rotaOcupada = true;
-									break;
-								} else {
-									rotaOcupada = false;
-									aviaoTurbo = false;
-									posicaoFinalX = possivelPosicaoX+(espacoAereo[0].length-possivelPosicaoY);
-									posicaoFinalY = possivelPosicaoY+(espacoAereo[0].length-possivelPosicaoY);
-									direcaoFinalVoo = direcaoPossivelVoo;
-								}
-							}
-						}
+					if(aviaoNaDiagonal(possivelPosicaoX, possivelPosicaoY)) { // Mesma lógica para a diagonal crescente
+						rotaOcupada = true;
+						break;
 					} else {
-						for(int inicioRotaX = possivelPosicaoX-possivelPosicaoY; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-							for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-								if(espacoAereo[inicioRotaX][inicioRotaY] != null) {
-									rotaOcupada = true;
-									break;
-								} else {
-									rotaOcupada = false;
-									aviaoTurbo = false;
-									posicaoFinalX = possivelPosicaoX+(espacoAereo.length-possivelPosicaoX);
-									posicaoFinalY = possivelPosicaoY+(espacoAereo.length-possivelPosicaoX);
-									direcaoFinalVoo = direcaoPossivelVoo;
-								}
-							}
-						}
+						rotaOcupada = false;
+						aviaoTurbo = false;
+						posicaoFinalX = possivelPosicaoX;
+						posicaoFinalY = possivelPosicaoY;
+						direcaoFinalVoo = direcaoPossivelVoo;
 					}
 					break;
-				case "RVC" :
-					for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-						if(espacoAereo[inicioRotaX][possivelPosicaoY] != null) {
-							rotaOcupada = true;
-							break;
-						} else {
-							rotaOcupada = false;
-							aviaoTurbo = false;
-							posicaoFinalX = 0;
-							posicaoFinalY = possivelPosicaoY;
-							direcaoFinalVoo = direcaoPossivelVoo;
-						}
+				case "RVC" : // FOR : varrer uma coluna para descobrir se a rota está vazia.
+					if(aviaoNaVertical(possivelPosicaoY)) {
+						rotaOcupada = true;
+						break;
+					} else {
+						rotaOcupada = false;
+						aviaoTurbo = false;
+						posicaoFinalX = possivelPosicaoX;
+						posicaoFinalY = possivelPosicaoY;
+						direcaoFinalVoo = direcaoPossivelVoo;
 					}
 					break;
-				case "RVD" :
-					for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-						if(espacoAereo[inicioRotaX][possivelPosicaoY] != null) {
-							rotaOcupada = true;
-							break;
-						} else {
-							rotaOcupada = false;
-							aviaoTurbo = false;
-							posicaoFinalX = espacoAereo.length-1;
-							posicaoFinalY = possivelPosicaoY;
-							direcaoFinalVoo = direcaoPossivelVoo;
-						}
+				case "RVD" : // Mesma coisa do RVD.
+					if(aviaoNaVertical(possivelPosicaoY)) {
+						rotaOcupada = true;
+						break;
+					} else {
+						rotaOcupada = false;
+						aviaoTurbo = false;
+						posicaoFinalX = possivelPosicaoX;
+						posicaoFinalY = possivelPosicaoY;
+						direcaoFinalVoo = direcaoPossivelVoo;
 					}
 					break;
-				case "RHC" :
-					for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-						if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
-							rotaOcupada = true;
-							break;
-						} else {
-							rotaOcupada = false;
-							aviaoTurbo = false;
-							posicaoFinalX = possivelPosicaoX;
-							posicaoFinalY = 0;
-							direcaoFinalVoo = direcaoPossivelVoo;
-						}
+				case "RHC" : // FOR : varrer uma linha para descobrir se a rota está vazia.
+					if(aviaoNaHorizontal(possivelPosicaoX)) {
+						rotaOcupada = true;
+						break;
+					} else {
+						rotaOcupada = false;
+						aviaoTurbo = false;
+						posicaoFinalX = possivelPosicaoX;
+						posicaoFinalY = possivelPosicaoY;
+						direcaoFinalVoo = direcaoPossivelVoo;
 					}
 					break;
-				case "RHD" :
-					for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-						if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
-							rotaOcupada = true;
-							break;
-						} else {
-							rotaOcupada = false;
-							aviaoTurbo = false;
-							posicaoFinalX = possivelPosicaoX;
-							posicaoFinalY = espacoAereo[0].length-1;
-							direcaoFinalVoo = direcaoPossivelVoo;
-						}
+				case "RHD" : // Mesca coisa do RHD.
+					if(aviaoNaHorizontal(possivelPosicaoX)) {
+						rotaOcupada = true;
+						break;
+					} else {
+						rotaOcupada = false;
+						aviaoTurbo = false;
+						posicaoFinalX = possivelPosicaoX;
+						posicaoFinalY = possivelPosicaoY;
+						direcaoFinalVoo = direcaoPossivelVoo;
 					}
 					break;
 				default : break;
@@ -546,127 +402,75 @@ public class EspacoAereo {
 				
 				switch(direcaoPossivelVoo) {
 				case "DC" :
-					if(possivelPosicaoX <= possivelPosicaoY) {
-
-						for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-							for(int inicioRotaY = possivelPosicaoY-possivelPosicaoX; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-								if(espacoAereo[inicioRotaX][inicioRotaY] != null) {
-									rotaOcupada = true;
-									break;
-								} else {
-									rotaOcupada = false;
-									aviaoTurbo = true;
-									posicaoFinalX = 0;
-									posicaoFinalY = possivelPosicaoY-possivelPosicaoX;
-									direcaoFinalVoo = direcaoPossivelVoo;
-								}
-							}
-						}
-					} else {
-						for(int inicioRotaX = possivelPosicaoX-possivelPosicaoY; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-							for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-								if(espacoAereo[inicioRotaX][inicioRotaY] != null) {
-									rotaOcupada = true;
-									break;
-								} else {
-									rotaOcupada = false;
-									aviaoTurbo = true;
-									posicaoFinalX = possivelPosicaoX-possivelPosicaoY;
-									posicaoFinalY = 0;
-									direcaoFinalVoo = direcaoPossivelVoo;
-								}
-							}
-						}
+					if(aviaoNaDiagonal(possivelPosicaoX, possivelPosicaoY)) { // Esse IF verifica qual é maior para definir qual vai ser a posicao inicial da rota.
+						rotaOcupada = true;
+						break;
+					} else { // caso todas as posicões estejam vazias ele, ele termina com a rota false e passa adiante a posicao.
+						rotaOcupada = false;
+						aviaoTurbo = true;
+						posicaoFinalX = possivelPosicaoX;
+						posicaoFinalY = possivelPosicaoY;
+						direcaoFinalVoo = direcaoPossivelVoo;
 					}
 					break;
 				case "DD" :
-					if((espacoAereo.length-possivelPosicaoX) <= (espacoAereo[0].length-possivelPosicaoY)) {
-
-						for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-							for(int inicioRotaY = possivelPosicaoY-possivelPosicaoX; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-								if(espacoAereo[inicioRotaX][inicioRotaY] != null) {
-									rotaOcupada = true;
-									break;
-								} else {
-									rotaOcupada = false;
-									aviaoTurbo = true;
-									posicaoFinalX = possivelPosicaoX+(espacoAereo[0].length-possivelPosicaoY);
-									posicaoFinalY = possivelPosicaoY+(espacoAereo[0].length-possivelPosicaoY);
-									direcaoFinalVoo = direcaoPossivelVoo;
-								}
-							}
-						}
+					if(aviaoNaDiagonal(possivelPosicaoX, possivelPosicaoY)) { // Mesma lógica para a diagonal crescente
+						rotaOcupada = true;
+						break;
 					} else {
-						for(int inicioRotaX = possivelPosicaoX-possivelPosicaoY; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-							for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-								if(espacoAereo[inicioRotaX][inicioRotaY] != null) {
-									rotaOcupada = true;
-									break;
-								} else {
-									rotaOcupada = false;
-									aviaoTurbo = true;
-									posicaoFinalX = possivelPosicaoX+(espacoAereo.length-possivelPosicaoX);
-									posicaoFinalY = possivelPosicaoY+(espacoAereo.length-possivelPosicaoX);
-									direcaoFinalVoo = direcaoPossivelVoo;
-								}
-							}
-						}
+						rotaOcupada = false;
+						aviaoTurbo = true;
+						posicaoFinalX = possivelPosicaoX;
+						posicaoFinalY = possivelPosicaoY;
+						direcaoFinalVoo = direcaoPossivelVoo;
 					}
 					break;
-				case "RVC" :
-					for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-						if(espacoAereo[inicioRotaX][possivelPosicaoY] != null) {
-							rotaOcupada = true;
-							break;
-						} else {
-							rotaOcupada = false;
-							aviaoTurbo = true;
-							posicaoFinalX = 0;
-							posicaoFinalY = possivelPosicaoY;
-							direcaoFinalVoo = direcaoPossivelVoo;
-						}
+				case "RVC" : // FOR : varrer uma coluna para descobrir se a rota está vazia.
+					if(aviaoNaVertical(possivelPosicaoY)) {
+						rotaOcupada = true;
+						break;
+					} else {
+						rotaOcupada = false;
+						aviaoTurbo = true;
+						posicaoFinalX = possivelPosicaoX;
+						posicaoFinalY = possivelPosicaoY;
+						direcaoFinalVoo = direcaoPossivelVoo;
 					}
 					break;
-				case "RVD" :
-					for(int inicioRotaX = 0; inicioRotaX < espacoAereo.length; inicioRotaX++) {
-						if(espacoAereo[inicioRotaX][possivelPosicaoY] != null) {
-							rotaOcupada = true;
-							break;
-						} else {
-							rotaOcupada = false;
-							aviaoTurbo = true;
-							posicaoFinalX = espacoAereo.length-1;
-							posicaoFinalY = possivelPosicaoY;
-							direcaoFinalVoo = direcaoPossivelVoo;
-						}
+				case "RVD" : // Mesma coisa do RVD.
+					if(aviaoNaVertical(possivelPosicaoY)) {
+						rotaOcupada = true;
+						break;
+					} else {
+						rotaOcupada = false;
+						aviaoTurbo = true;
+						posicaoFinalX = possivelPosicaoX;
+						posicaoFinalY = possivelPosicaoY;
+						direcaoFinalVoo = direcaoPossivelVoo;
 					}
 					break;
-				case "RHC" :
-					for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-						if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
-							rotaOcupada = true;
-							break;
-						} else {
-							rotaOcupada = false;
-							aviaoTurbo = true;
-							posicaoFinalX = possivelPosicaoX;
-							posicaoFinalY = 0;
-							direcaoFinalVoo = direcaoPossivelVoo;
-						}
+				case "RHC" : // FOR : varrer uma linha para descobrir se a rota está vazia.
+					if(aviaoNaHorizontal(possivelPosicaoX)) {
+						rotaOcupada = true;
+						break;
+					} else {
+						rotaOcupada = false;
+						aviaoTurbo = true;
+						posicaoFinalX = possivelPosicaoX;
+						posicaoFinalY = possivelPosicaoY;
+						direcaoFinalVoo = direcaoPossivelVoo;
 					}
 					break;
-				case "RHD" :
-					for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
-						if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
-							rotaOcupada = true;
-							break;
-						} else {
-							rotaOcupada = false;
-							aviaoTurbo = true;
-							posicaoFinalX = possivelPosicaoX;
-							posicaoFinalY = espacoAereo[0].length-1;
-							direcaoFinalVoo = direcaoPossivelVoo;
-						}
+				case "RHD" : // Mesca coisa do RHD.
+					if(aviaoNaHorizontal(possivelPosicaoX)) {
+						rotaOcupada = true;
+						break;
+					} else {
+						rotaOcupada = false;
+						aviaoTurbo = true;
+						posicaoFinalX = possivelPosicaoX;
+						posicaoFinalY = possivelPosicaoY;
+						direcaoFinalVoo = direcaoPossivelVoo;
 					}
 					break;
 				default : break;
@@ -773,6 +577,72 @@ public class EspacoAereo {
 		}
 	}
 	
+	// Método Complementar do movimentarAvioes() ...
+	private void movimentoBaseadoNaDireacao(String direcao, int i, int j) {
+		switch(direcao) {
+		case "DC" :
+			if((espacoAereo[i][j].getProximoX() == espacoAereo.length) || (espacoAereo[i][j].getProximoY() == espacoAereo[0].length)) {
+				espacoAereo[i][j] = null;
+			} else {
+				espacoAereo[i][j].setPosicaoX(espacoAereo[i][j].getProximoX());
+				espacoAereo[i][j].setPosicaoY(espacoAereo[i][j].getProximoY());
+				espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
+				espacoAereo[i][j] = null;
+			}
+			break;
+		case "DD" :
+			if((espacoAereo[i][j].getProximoX() == -1) || (espacoAereo[i][j].getProximoY() == -1)) {
+				espacoAereo[i][j] = null;
+			} else {
+				espacoAereo[i][j].setPosicaoX(espacoAereo[i][j].getProximoX());
+				espacoAereo[i][j].setPosicaoY(espacoAereo[i][j].getProximoY());
+				espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
+				espacoAereo[i][j] = null;
+			}
+		case "RVC" :
+			if(espacoAereo[i][j].getProximoX() == espacoAereo.length) {
+				espacoAereo[i][j] = null;
+			} else {
+				espacoAereo[i][j].setPosicaoX(espacoAereo[i][j].getProximoX());
+				espacoAereo[i][j].setPosicaoY(espacoAereo[i][j].getProximoY());
+				espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
+				espacoAereo[i][j] = null;
+			}
+			break;
+		case "RVD" :
+			if(espacoAereo[i][j].getProximoX() == -1) {
+				espacoAereo[i][j] = null;
+			} else {
+				espacoAereo[i][j].setPosicaoX(espacoAereo[i][j].getProximoX());
+				espacoAereo[i][j].setPosicaoY(espacoAereo[i][j].getProximoY());
+				espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
+				espacoAereo[i][j] = null;
+			}
+			break;
+		case "RHC" :
+			if(espacoAereo[i][j].getProximoY() == espacoAereo[0].length) {
+				espacoAereo[i][j] = null;
+			} else {
+				espacoAereo[i][j].setPosicaoX(espacoAereo[i][j].getProximoX());
+				espacoAereo[i][j].setPosicaoY(espacoAereo[i][j].getProximoY());
+				espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
+				espacoAereo[i][j] = null;
+			}
+			break;
+		case "RHD" :
+			if(espacoAereo[i][j].getProximoY() == -1) {
+				espacoAereo[i][j] = null;
+			} else {
+				espacoAereo[i][j].setPosicaoX(espacoAereo[i][j].getProximoX());
+				espacoAereo[i][j].setPosicaoY(espacoAereo[i][j].getProximoY());
+				espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
+				espacoAereo[i][j] = null;
+			}
+			break;
+		default : break;
+		}
+	}
+	
 	// Método complementar Atualizar EA: Joga os aviões que podem, nas próximas posições.
 	private void movimentarAvioes() {
 		for(int i = 0; i < espacoAereo.length; i++) {
@@ -783,30 +653,12 @@ public class EspacoAereo {
 					switch(espacoAereo[i][j].getAvanca()) {
 					case "Avanca" : 
 						espacoAereo[i][j].consumoCombustivel();
-						if((espacoAereo[i][j].getProximoX() == espacoAereo.length) || (espacoAereo[i][j].getProximoY() == espacoAereo[0].length)) {
-							espacoAereo[i][j] = null;
-						} else {
-							if((espacoAereo[i][j].getProximoX() == -1) || (espacoAereo[i][j].getProximoY() == -1)) {
-								espacoAereo[i][j] = null;
-							} else {
-								espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
-								espacoAereo[i][j] = null;
-							}
-						}
+						movimentoBaseadoNaDireacao(espacoAereo[i][j].getDirecaoVoo(), i, j);
 						break;
 					case "Acelera" :
 						espacoAereo[i][j].velocUp();
 						espacoAereo[i][j].consumoCombustivel();
-						if((espacoAereo[i][j].getProximoX() == espacoAereo.length) || (espacoAereo[i][j].getProximoY() == espacoAereo[0].length)) {
-							espacoAereo[i][j] = null;
-						} else {
-							if((espacoAereo[i][j].getProximoX() == -1) || (espacoAereo[i][j].getProximoY() == -1)) {
-								espacoAereo[i][j] = null;
-							} else {
-								espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
-								espacoAereo[i][j] = null;
-							}
-						}
+						movimentoBaseadoNaDireacao(espacoAereo[i][j].getDirecaoVoo(), i, j);
 						break;
 					case "Diminui" : 
 						espacoAereo[i][j].velocDown();
