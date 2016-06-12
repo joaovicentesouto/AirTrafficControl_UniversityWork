@@ -21,7 +21,7 @@ public class Aviao {
 		proximoX = 0;
 		proximoY = 0;
 		alertaCombustivel = false;
-		avanca = "Avança, sem restrições";
+		avanca = "Avanca";
 	}
 
 	// Getters e setters.

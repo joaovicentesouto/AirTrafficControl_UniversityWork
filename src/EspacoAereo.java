@@ -666,14 +666,14 @@ public class EspacoAereo {
 
 					// SWITCH : usado para verificar o avanca e fazer as atualizações.
 					switch(espacoAereo[i][j].getAvanca()) {
-					case "Avança, sem restrições" : 
+					case "Avanca" : 
 						// Não precisa alterar nada.
 						break;
-					case "Avança e aumenta a velocidade." :
-						espacoAereo[i][j].setAvanca("Avança, sem restrições");
+					case "Acelera" :
+						espacoAereo[i][j].setAvanca("Avanca");
 						break;
-					case "Fica parado e diminui a velocidade." : 
-						espacoAereo[i][j].setAvanca("Avança, sem restrições");
+					case "Diminui" : 
+						espacoAereo[i][j].setAvanca("Avanca");
 						break;
 					}
 				} else {
@@ -691,24 +691,29 @@ public class EspacoAereo {
 						for(int l = 0; l < espacoAereo[0].length; l++) {
 							
 							if(espacoAereo[k][l] != null) { // Se encontrar um segundo avião.
-								// Verifica colisão entre os dois aviões.
-								if((espacoAereo[i][j].getProximoX() == espacoAereo[k][l].getProximoX()) &&
-										(espacoAereo[i][j].getProximoY() == espacoAereo[k][l].getProximoY())) {
-									
-									// IF : compara a velocidade dos dois aviões.
-									if(espacoAereo[i][j].getVelocidade() >= espacoAereo[k][l].getVelocidade()) {
-										// Primeiro avião avança.
-										espacoAereo[i][j].setAvanca("Avança e aumenta a velocidade.");
-										// Segunda avião fica parado.
-										espacoAereo[k][l].setAvanca("Fica parado e diminui a velocidade.");
+								
+								if((i != k) && (j != l)) {
+									// Verifica colisão entre os dois aviões.
+									if((espacoAereo[i][j].getProximoX() == espacoAereo[k][l].getProximoX()) &&
+											(espacoAereo[i][j].getProximoY() == espacoAereo[k][l].getProximoY())) {
+										
+										// IF : compara a velocidade dos dois aviões.
+										if(espacoAereo[i][j].getVelocidade() >= espacoAereo[k][l].getVelocidade()) {
+											// Primeiro avião avança.
+											espacoAereo[i][j].setAvanca("Acelera");
+											// Segunda avião fica parado.
+											espacoAereo[k][l].setAvanca("Diminui");
+										} else {
+											// Segundo avião avança.
+											espacoAereo[k][l].setAvanca("Acelera");
+											// Primeiro avião fica parado.
+											espacoAereo[i][j].setAvanca("Diminui");
+										}
 									} else {
-										// Segundo avião avança.
-										espacoAereo[k][l].setAvanca("Avança e aumenta a velocidade.");
-										// Primeiro avião fica parado.
-										espacoAereo[i][j].setAvanca("Fica parado e diminui a velocidade.");
+										// Nada porque ele não precisa mudar nada se os aviões não forem colidir.
 									}
 								} else {
-									// Nada porque ele não precisa mudar nada se os aviões não forem colidir.
+									// Nada porque é o mesmo avião.
 								}
 							} else {
 								// Não faz nada porque não achou nenhum avião.
@@ -728,15 +733,18 @@ public class EspacoAereo {
 					
 					// SWITCH : usado para verificar o avanca e fazer as atualizações.
 					switch(espacoAereo[i][j].getAvanca()) {
-					case "Avança, sem restrições" : 
+					case "Avanca" : 
 						espacoAereo[i][j].consumoCombustivel();
-						break;
-					case "Avança e aumenta a velocidade." :
-						espacoAereo[i][j].velocUp();
 						espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
 						espacoAereo[i][j] = null;
 						break;
-					case "Fica parado e diminui a velocidade." : 
+					case "Acelera" :
+						espacoAereo[i][j].velocUp();
+						espacoAereo[i][j].consumoCombustivel();
+						espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
+						espacoAereo[i][j] = null;
+						break;
+					case "Diminui" : 
 						espacoAereo[i][j].velocDown();
 						break;
 					}
@@ -754,6 +762,42 @@ public class EspacoAereo {
 				}
 			}
 		}
+	}
+	
+	// Método para mostrar a o espaço aéreo graficamente.
+	public String graficoEspacoAereo() {
+		String grafico = "";
+		for(int i = 0; i < espacoAereo.length; i++) {
+			for(int j = 0; j < espacoAereo[0].length; j++) {
+				if(espacoAereo[i][j] != null) {
+					switch(espacoAereo[i][j].getDirecaoVoo()) {
+					case "DC" :
+						grafico += "| ↘ ︎";
+						break;
+					case "DD" :
+						grafico += "| ↖ ︎︎";
+						break;
+					case "RVC" :
+						grafico += "| ↓ ︎";
+						break;
+					case "RVD" :
+						grafico += "| ↑ ︎︎";
+						break;
+					case "RHC" :
+						grafico += "| → ︎";
+						break;
+					case "RHD" :
+						grafico += "| ← ︎︎";
+						break;
+					default : break;
+					}
+				} else {
+					grafico += "|   ︎︎";
+				}
+			}
+			grafico += "|\n";
+		}
+		return grafico;
 	}
 	
 }
