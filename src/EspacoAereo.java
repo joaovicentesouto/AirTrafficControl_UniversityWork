@@ -30,8 +30,8 @@ public class EspacoAereo {
 	// Método de povoamento
 	public void levantandoVoo() {
 		Inicializacao in = new Inicializacao();
-		Random gerador = new Random();
-		int quantMax = ((espacoAereo.length*espacoAereo[0].length)/3);
+		Random gerador = new Random(444333);
+		int quantMax = ((espacoAereo.length*espacoAereo[0].length)/5);
 		
 		for(int i = 0; i < quantMax; i++){
 			String direcaoFinalVoo = null;
@@ -143,7 +143,7 @@ public class EspacoAereo {
 						}
 						break;
 					case "RHC" : // FOR : varrer uma linha para descobrir se a rota está vazia.
-						for(int inicioRotaY = 0; inicioRotaY < espacoAereo.length; inicioRotaY++) {
+						for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
 							if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
 								rotaOcupada = true;
 								break;
@@ -157,7 +157,7 @@ public class EspacoAereo {
 						}
 						break;
 					case "RHD" : // Mesca coisa do RHD.
-						for(int inicioRotaY = 0; inicioRotaY < espacoAereo.length; inicioRotaY++) {
+						for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
 							if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
 								rotaOcupada = true;
 								break;
@@ -277,7 +277,7 @@ public class EspacoAereo {
 						}
 						break;
 					case "RHC" : // FOR : varrer uma linha para descobrir se a rota está vazia.
-						for(int inicioRotaY = 0; inicioRotaY < espacoAereo.length; inicioRotaY++) {
+						for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
 							if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
 								rotaOcupada = true;
 								break;
@@ -291,7 +291,7 @@ public class EspacoAereo {
 						}
 						break;
 					case "RHD" : // Mesca coisa do RHD.
-						for(int inicioRotaY = 0; inicioRotaY < espacoAereo.length; inicioRotaY++) {
+						for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
 							if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
 								rotaOcupada = true;
 								break;
@@ -449,7 +449,7 @@ public class EspacoAereo {
 					}
 					break;
 				case "RHC" :
-					for(int inicioRotaY = 0; inicioRotaY < espacoAereo.length; inicioRotaY++) {
+					for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
 						if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
 							rotaOcupada = true;
 							break;
@@ -463,7 +463,7 @@ public class EspacoAereo {
 					}
 					break;
 				case "RHD" :
-					for(int inicioRotaY = 0; inicioRotaY < espacoAereo.length; inicioRotaY++) {
+					for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
 						if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
 							rotaOcupada = true;
 							break;
@@ -584,7 +584,7 @@ public class EspacoAereo {
 					}
 					break;
 				case "RHC" :
-					for(int inicioRotaY = 0; inicioRotaY < espacoAereo.length; inicioRotaY++) {
+					for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
 						if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
 							rotaOcupada = true;
 							break;
@@ -598,7 +598,7 @@ public class EspacoAereo {
 					}
 					break;
 				case "RHD" :
-					for(int inicioRotaY = 0; inicioRotaY < espacoAereo.length; inicioRotaY++) {
+					for(int inicioRotaY = 0; inicioRotaY < espacoAereo[0].length; inicioRotaY++) {
 						if(espacoAereo[possivelPosicaoX][inicioRotaY] != null) {
 							rotaOcupada = true;
 							break;
@@ -640,8 +640,10 @@ public class EspacoAereo {
 		}
 	}
 	
-	// Método para atualizar a próxima posição de todos os aviões.
-	public void proximaPosicaoTodos() {
+	// ------ MÉTODOS PARA ATUALIZAR O ESPAÇO AÉREO ------  //
+	
+	// Método complementar Atualizar EA: para atualizar a próxima posição de todos os aviões.
+	private void proximaPosicaoTodos() {
 		// FOR pra percorrer a matriz todo, quando achar um avião, executa o método proximaPosicao() dele.
 		for(int i = 0; i < espacoAereo.length; i++) {
 			for(int j = 0; j < espacoAereo[0].length; j++) {
@@ -654,35 +656,21 @@ public class EspacoAereo {
 		}
 	}
 	
-	// Método para Atualizar o espaço aéreo.
-	public void atualizarEspacoAereo() {
-		
-		// Atualiza todos para avanca(PODE AVANÇAR). Toda vez que executar esse método todos os aviões tem que estar
-		// prontos para avançar pq ele a seguir só altera se houver colisão. Logo se não houver e estiver como FIQUE PARADO
-		// o avião não avançaria mesmo podendo.
+	// Método complementar Atualizar EA : deixa todos prontos para avançar no início, antes de verificar se podem ou não avançar.
+	private void habilitarAvanco() {
 		for(int i = 0; i < espacoAereo.length; i++) {
 			for(int j = 0; j < espacoAereo[0].length; j++) {
 				if(espacoAereo[i][j] != null) { // Se existir um avião nessa posição.
-
-					// SWITCH : usado para verificar o avanca e fazer as atualizações.
-					switch(espacoAereo[i][j].getAvanca()) {
-					case "Avanca" : 
-						// Não precisa alterar nada.
-						break;
-					case "Acelera" :
-						espacoAereo[i][j].setAvanca("Avanca");
-						break;
-					case "Diminui" : 
-						espacoAereo[i][j].setAvanca("Avanca");
-						break;
-					}
+					espacoAereo[i][j].setAvanca("Avanca");
 				} else {
 					// Nada.
 				}
 			}
 		}
-		
-		// FOR para achar cada avião e verificar se ele pode avançar ou não.
+	}
+	
+	// Método complementar Atualizar EA: para verificar colisão e deixar desativado o avanço do avião mais lento.
+	private void verificarColisao() {
 		for(int i = 0; i < espacoAereo.length; i++) {
 			for(int j = 0; j < espacoAereo[0].length; j++) {
 				if(espacoAereo[i][j] != null) { // Se encontrar o primeiro avião.
@@ -725,8 +713,10 @@ public class EspacoAereo {
 				}
 			}
 		}
-		
-		// Agora atualizamos as posições nos baseando no atributo avanca de cada avião.
+	}
+	
+	// Método complementar Atualizar EA: Joga os aviões que podem, nas próximas posições.
+	private void movimentarAvioes() {
 		for(int i = 0; i < espacoAereo.length; i++) {
 			for(int j = 0; j < espacoAereo[0].length; j++) {
 				if(espacoAereo[i][j] != null) { // Se existir um avião nessa posição.
@@ -735,14 +725,30 @@ public class EspacoAereo {
 					switch(espacoAereo[i][j].getAvanca()) {
 					case "Avanca" : 
 						espacoAereo[i][j].consumoCombustivel();
-						espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
-						espacoAereo[i][j] = null;
+						if((espacoAereo[i][j].getProximoX() == espacoAereo.length) || (espacoAereo[i][j].getProximoY() == espacoAereo[0].length)) {
+							espacoAereo[i][j] = null;
+						} else {
+							if((espacoAereo[i][j].getProximoX() == -1) || (espacoAereo[i][j].getProximoY() == -1)) {
+								espacoAereo[i][j] = null;
+							} else {
+								espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
+								espacoAereo[i][j] = null;
+							}
+						}
 						break;
 					case "Acelera" :
 						espacoAereo[i][j].velocUp();
 						espacoAereo[i][j].consumoCombustivel();
-						espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
-						espacoAereo[i][j] = null;
+						if((espacoAereo[i][j].getProximoX() == espacoAereo.length) || (espacoAereo[i][j].getProximoY() == espacoAereo[0].length)) {
+							espacoAereo[i][j] = null;
+						} else {
+							if((espacoAereo[i][j].getProximoX() == -1) || (espacoAereo[i][j].getProximoY() == -1)) {
+								espacoAereo[i][j] = null;
+							} else {
+								espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
+								espacoAereo[i][j] = null;
+							}
+						}
 						break;
 					case "Diminui" : 
 						espacoAereo[i][j].velocDown();
@@ -753,15 +759,22 @@ public class EspacoAereo {
 				}
 			}
 		}
+	}
+	
+	// Método para Atualizar o espaço aéreo.
+	public void atualizarEspacoAereo() {
 		
-		// Atualizar a próxima posição de cada avião.
-		for(int i = 0; i < espacoAereo.length; i++) {
-			for(int j = 0; j < espacoAereo[0].length; j++) {
-				if(espacoAereo[i][j] != null){
-					espacoAereo[i][j].proximaPosicao();
-				}
-			}
-		}
+		// Achando a próxima posição de todos
+		proximaPosicaoTodos();
+		
+		// Habilita o avanço de todos.
+		habilitarAvanco();
+				
+		// FOR para achar cada avião e verificar se ele pode avançar ou não.
+		verificarColisao();
+		
+		// Agora atualizamos as posições nos baseando no atributo avanca de cada avião.
+		movimentarAvioes();
 	}
 	
 	// Método para mostrar a o espaço aéreo graficamente.
@@ -792,7 +805,7 @@ public class EspacoAereo {
 					default : break;
 					}
 				} else {
-					grafico += "|   ︎︎";
+					grafico += "|      ︎︎";
 				}
 			}
 			grafico += "|\n";

@@ -119,20 +119,20 @@ public class Aviao {
 			proximoY = posicaoY-1;
 			break;
 		case "RVC" :
-			proximoX = posicaoX;
-			proximoY = posicaoY+1;
-			break;
-		case "RVD" :
-			proximoX = posicaoX;
-			proximoY = posicaoY-1;
-			break;
-		case "RHC" :
 			proximoX = posicaoX+1;
 			proximoY = posicaoY;
 			break;
-		case "RHD" :
+		case "RVD" :
 			proximoX = posicaoX-1;
 			proximoY = posicaoY;
+			break;
+		case "RHC" :
+			proximoX = posicaoX;
+			proximoY = posicaoY+1;
+			break;
+		case "RHD" :
+			proximoX = posicaoX;
+			proximoY = posicaoY-1;
 			break;
 		default : break;
 		}
