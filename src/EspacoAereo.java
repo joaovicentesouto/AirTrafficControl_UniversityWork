@@ -27,13 +27,71 @@ public class EspacoAereo {
 		return espacoAereo[posicaoX][posicaoY];
 	}
 	
+	// Método complementar : achar um avião na verdical.
+	private boolean aviaoNaVertical(int coluna) {
+		boolean achei = false;
+		for(int i = 0; i < espacoAereo.length; i++) {
+			if(espacoAereo[i][coluna] != null) {
+				achei = true;
+			} else {
+				// Não faz nada.
+			}
+		}
+		return achei;
+	}
+	
+	// Método complementar : achar um avião na verdical.
+	private boolean aviaoNaHorizontal(int linha) {
+		boolean achei = false;
+		for(int i = 0; i < espacoAereo.length; i++) {
+			if(espacoAereo[linha][i] != null) {
+				achei = true;
+			} else {
+				// Não faz nada.
+			}
+		}
+		return achei;
+	}
+	
+	// Método complementar : achar um avião na verdical.
+	private boolean aviaoNaDiagonal(int linha, int coluna) {
+		boolean achei = false;
+		int count1 = 0, count2 = 0;
+		if(linha <= coluna) {
+			count1 = 0;
+			count2 = coluna-linha;
+			for(int i = 0; i < espacoAereo.length; i++) {
+				if(espacoAereo[count1][count2] != null) {
+					achei = true;
+				} else {
+					// Não faz nada.
+				}
+				count1++;
+				count2++;
+			}	
+		} else {
+			count1 = linha-coluna;
+			count2 = 0;
+			for(int i = linha-coluna; i < espacoAereo.length; i++) {
+				if(espacoAereo[count1][count2] != null) {
+					achei = true;
+				} else {
+					// Não faz nada.
+				}
+				count1++;
+				count2++;
+			}
+		}
+		return achei;
+	}
+	
 	// Método de povoamento
 	public void levantandoVoo() {
 		Inicializacao in = new Inicializacao();
 		Random gerador = new Random(444333);
-		int quantMax = ((espacoAereo.length*espacoAereo[0].length)/5);
+		int quantMaxAvioes = ((espacoAereo.length*espacoAereo[0].length)/5);
 		
-		for(int i = 0; i < quantMax; i++){
+		for(int i = 0; i < quantMaxAvioes; i++){
 			String direcaoFinalVoo = null;
 			int posicaoFinalX = 0, posicaoFinalY = 0;
 			boolean rotaOcupada = true, aviaoTurbo = false;
@@ -322,7 +380,7 @@ public class EspacoAereo {
 			// Criando avião.
 			if(aviaoTurbo) {
 				// Criando o avião turbo e jogando ele na matriz (espaco aéreo).
-				AviaoTurbo av = new AviaoTurbo(("Av_" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoFinalVoo, posicaoFinalX, posicaoFinalY, false);
+				AviaoTurbo av = new AviaoTurbo(("AvT_" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoFinalVoo, posicaoFinalX, posicaoFinalY, false);
 				espacoAereo[posicaoFinalX][posicaoFinalY] = av;
 				quantTotalAvioes++;
 			} else {
@@ -629,7 +687,7 @@ public class EspacoAereo {
 		// Criando avião.
 		if(aviaoTurbo) {
 			// Criando o avião turbo e jogando ele na matriz (espaco aéreo).
-			AviaoTurbo av = new AviaoTurbo(("Av_" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoFinalVoo, posicaoFinalX, posicaoFinalY, false);
+			AviaoTurbo av = new AviaoTurbo(("AvT_" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoFinalVoo, posicaoFinalX, posicaoFinalY, false);
 			espacoAereo[posicaoFinalX][posicaoFinalY] = av;
 			quantTotalAvioes++;
 		} else {
@@ -680,7 +738,9 @@ public class EspacoAereo {
 							
 							if(espacoAereo[k][l] != null) { // Se encontrar um segundo avião.
 								
-								if((i != k) && (j != l)) {
+								if((i == k) && (j == l)) {
+									// Nada porque é o mesmo avião.
+								} else {
 									// Verifica colisão entre os dois aviões.
 									if((espacoAereo[i][j].getProximoX() == espacoAereo[k][l].getProximoX()) &&
 											(espacoAereo[i][j].getProximoY() == espacoAereo[k][l].getProximoY())) {
@@ -700,8 +760,6 @@ public class EspacoAereo {
 									} else {
 										// Nada porque ele não precisa mudar nada se os aviões não forem colidir.
 									}
-								} else {
-									// Nada porque é o mesmo avião.
 								}
 							} else {
 								// Não faz nada porque não achou nenhum avião.
