@@ -399,6 +399,18 @@ public class EspacoAereo {
 		}
 	}
 
+	// Método complementar do movimentoBaseadoNaDirecao() para verificar se a próxima posição tem algum avião antes de movimentar o avião, e depois movimentar.
+	private void caminhoLivre(int i, int j) {
+		if(espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] != null) {
+			espacoAereo[i][j].velocDown();
+		} else {
+			espacoAereo[i][j].setPosicaoX(espacoAereo[i][j].getProximoX());
+			espacoAereo[i][j].setPosicaoY(espacoAereo[i][j].getProximoY());
+			espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
+			espacoAereo[i][j] = null;
+		}
+	}
+	
 	// Método Complementar do movimentarAvioes() ...
 	private void movimentoBaseadoNaDireacao(String direcao, int i, int j) {
 		switch(direcao) {
@@ -406,59 +418,41 @@ public class EspacoAereo {
 			if((espacoAereo[i][j].getProximoX() == espacoAereo.length) || (espacoAereo[i][j].getProximoY() == espacoAereo[0].length)) {
 				espacoAereo[i][j] = null;
 			} else {
-				espacoAereo[i][j].setPosicaoX(espacoAereo[i][j].getProximoX());
-				espacoAereo[i][j].setPosicaoY(espacoAereo[i][j].getProximoY());
-				espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
-				espacoAereo[i][j] = null;
+				caminhoLivre(i, j);
 			}
 			break;
 		case "DD" :
 			if((espacoAereo[i][j].getProximoX() == -1) || (espacoAereo[i][j].getProximoY() == -1)) {
 				espacoAereo[i][j] = null;
 			} else {
-				espacoAereo[i][j].setPosicaoX(espacoAereo[i][j].getProximoX());
-				espacoAereo[i][j].setPosicaoY(espacoAereo[i][j].getProximoY());
-				espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
-				espacoAereo[i][j] = null;
+				caminhoLivre(i, j);
 			}
 		case "RVC" :
-			if(espacoAereo[i][j].getProximoX() == espacoAereo.length) {
+			if(espacoAereo[i][j].getProximoX() == espacoAereo.length) { // ERRO : PROCUROU O METODO DE UM NULL, VER PQ.
 				espacoAereo[i][j] = null;
 			} else {
-				espacoAereo[i][j].setPosicaoX(espacoAereo[i][j].getProximoX());
-				espacoAereo[i][j].setPosicaoY(espacoAereo[i][j].getProximoY());
-				espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
-				espacoAereo[i][j] = null;
+				caminhoLivre(i, j);
 			}
 			break;
 		case "RVD" :
 			if(espacoAereo[i][j].getProximoX() == -1) {
 				espacoAereo[i][j] = null;
 			} else {
-				espacoAereo[i][j].setPosicaoX(espacoAereo[i][j].getProximoX());
-				espacoAereo[i][j].setPosicaoY(espacoAereo[i][j].getProximoY());
-				espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
-				espacoAereo[i][j] = null;
+				caminhoLivre(i, j);
 			}
 			break;
 		case "RHC" :
 			if(espacoAereo[i][j].getProximoY() == espacoAereo[0].length) {
 				espacoAereo[i][j] = null;
 			} else {
-				espacoAereo[i][j].setPosicaoX(espacoAereo[i][j].getProximoX());
-				espacoAereo[i][j].setPosicaoY(espacoAereo[i][j].getProximoY());
-				espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
-				espacoAereo[i][j] = null;
+				caminhoLivre(i, j);
 			}
 			break;
 		case "RHD" :
 			if(espacoAereo[i][j].getProximoY() == -1) {
 				espacoAereo[i][j] = null;
 			} else {
-				espacoAereo[i][j].setPosicaoX(espacoAereo[i][j].getProximoX());
-				espacoAereo[i][j].setPosicaoY(espacoAereo[i][j].getProximoY());
-				espacoAereo[espacoAereo[i][j].getProximoX()][espacoAereo[i][j].getProximoY()] = espacoAereo[i][j];
-				espacoAereo[i][j] = null;
+				caminhoLivre(i, j);
 			}
 			break;
 		default : break;
