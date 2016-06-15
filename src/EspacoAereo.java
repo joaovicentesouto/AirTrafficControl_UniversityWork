@@ -207,184 +207,100 @@ public class EspacoAereo {
 	}
 
 	// Método inserindo um avião pela borda, durante a execução.
-	public void entrandoAviao() {
+	public void entrandoAviaoBorda() {
 		Inicializacao in = new Inicializacao();
-		Random gerador = new Random();
+		Random gerador = new Random(444333);
 
 		String direcaoFinalVoo = null;
 		int posicaoFinalX = 0, posicaoFinalY = 0;
-		boolean rotaOcupada = true, aviaoTurbo = false;
+		boolean rotaOcupada = true;
 
-		// Mesmo conceito de gerar n avioes aleatórios porém aqui se cria apenas um, e a posição inicial é sempre em alguma borda.
-		switch(gerador.nextInt(2)) {
-		case 0 : // Avião normal
-			do {
-				String direcaoPossivelVoo = in.getDirecaoVoo(gerador.nextInt(5));
-				int possivelPosicaoX = gerador.nextInt(espacoAereo.length);
-				int possivelPosicaoY = gerador.nextInt(espacoAereo[0].length);
-
-				switch(direcaoPossivelVoo) {
-				case "DC" :
-					if(aviaoNaDiagonal(possivelPosicaoX, possivelPosicaoY)) { // Esse IF verifica qual é maior para definir qual vai ser a posicao inicial da rota.
-						rotaOcupada = true;
-						break;
-					} else { // caso todas as posicões estejam vazias ele, ele termina com a rota false e passa adiante a posicao.
-						rotaOcupada = false;
-						aviaoTurbo = false;
-						posicaoFinalX = possivelPosicaoX;
-						posicaoFinalY = possivelPosicaoY;
-						direcaoFinalVoo = direcaoPossivelVoo;
-					}
+		do { // DO WHILE para verificar se posso colocar um avião em determinada rota.
+			String direcaoPossivelVoo = in.getDirecaoVoo(gerador.nextInt(5));
+			int possivelPosicaoX = gerador.nextInt(espacoAereo.length);
+			int possivelPosicaoY = gerador.nextInt(espacoAereo[0].length);
+			switch(direcaoPossivelVoo) {
+			case "DC" :
+				if(aviaoNaDiagonal(possivelPosicaoX, possivelPosicaoY)) { // Esse IF verifica qual é maior para definir qual vai ser a posicao inicial da rota.
+					rotaOcupada = true;
 					break;
-				case "DD" :
-					if(aviaoNaDiagonal(possivelPosicaoX, possivelPosicaoY)) { // Mesma lógica para a diagonal crescente
-						rotaOcupada = true;
-						break;
+				} else { // caso todas as posicões estejam vazias ele, ele termina com a rota false e passa adiante a posicao.
+					rotaOcupada = false;
+					if(possivelPosicaoX <= possivelPosicaoY) { // Colocando no começo da rota.
+						posicaoFinalX = 0;
+						posicaoFinalY = possivelPosicaoY-possivelPosicaoX;
+						direcaoFinalVoo = direcaoPossivelVoo;
 					} else {
-						rotaOcupada = false;
-						aviaoTurbo = false;
-						posicaoFinalX = possivelPosicaoX;
-						posicaoFinalY = possivelPosicaoY;
+						posicaoFinalX = possivelPosicaoX-possivelPosicaoY;
+						posicaoFinalY = 0;
 						direcaoFinalVoo = direcaoPossivelVoo;
 					}
-					break;
-				case "RVC" : // FOR : varrer uma coluna para descobrir se a rota está vazia.
-					if(aviaoNaVertical(possivelPosicaoY)) {
-						rotaOcupada = true;
-						break;
-					} else {
-						rotaOcupada = false;
-						aviaoTurbo = false;
-						posicaoFinalX = possivelPosicaoX;
-						posicaoFinalY = possivelPosicaoY;
-						direcaoFinalVoo = direcaoPossivelVoo;
-					}
-					break;
-				case "RVD" : // Mesma coisa do RVD.
-					if(aviaoNaVertical(possivelPosicaoY)) {
-						rotaOcupada = true;
-						break;
-					} else {
-						rotaOcupada = false;
-						aviaoTurbo = false;
-						posicaoFinalX = possivelPosicaoX;
-						posicaoFinalY = possivelPosicaoY;
-						direcaoFinalVoo = direcaoPossivelVoo;
-					}
-					break;
-				case "RHC" : // FOR : varrer uma linha para descobrir se a rota está vazia.
-					if(aviaoNaHorizontal(possivelPosicaoX)) {
-						rotaOcupada = true;
-						break;
-					} else {
-						rotaOcupada = false;
-						aviaoTurbo = false;
-						posicaoFinalX = possivelPosicaoX;
-						posicaoFinalY = possivelPosicaoY;
-						direcaoFinalVoo = direcaoPossivelVoo;
-					}
-					break;
-				case "RHD" : // Mesca coisa do RHD.
-					if(aviaoNaHorizontal(possivelPosicaoX)) {
-						rotaOcupada = true;
-						break;
-					} else {
-						rotaOcupada = false;
-						aviaoTurbo = false;
-						posicaoFinalX = possivelPosicaoX;
-						posicaoFinalY = possivelPosicaoY;
-						direcaoFinalVoo = direcaoPossivelVoo;
-					}
-					break;
-				default : break;
 				}
-			} while(rotaOcupada);
-			break;
-		case 1 : // Avião turbo
-			do {
-				String direcaoPossivelVoo = in.getDirecaoVoo(gerador.nextInt(5));
-				int possivelPosicaoX = gerador.nextInt(espacoAereo.length);
-				int possivelPosicaoY = gerador.nextInt(espacoAereo[0].length);
-
-				switch(direcaoPossivelVoo) {
-				case "DC" :
-					if(aviaoNaDiagonal(possivelPosicaoX, possivelPosicaoY)) { // Esse IF verifica qual é maior para definir qual vai ser a posicao inicial da rota.
-						rotaOcupada = true;
-						break;
-					} else { // caso todas as posicões estejam vazias ele, ele termina com a rota false e passa adiante a posicao.
-						rotaOcupada = false;
-						aviaoTurbo = true;
-						posicaoFinalX = possivelPosicaoX;
-						posicaoFinalY = possivelPosicaoY;
-						direcaoFinalVoo = direcaoPossivelVoo;
-					}
+				break;
+			case "DD" :
+				if(aviaoNaDiagonal(possivelPosicaoX, possivelPosicaoY)) { // Mesma lógica para a diagonal crescente
+					rotaOcupada = true;
 					break;
-				case "DD" :
-					if(aviaoNaDiagonal(possivelPosicaoX, possivelPosicaoY)) { // Mesma lógica para a diagonal crescente
-						rotaOcupada = true;
-						break;
+				} else {
+					rotaOcupada = false;
+					if((espacoAereo.length-possivelPosicaoX) <= (espacoAereo[0].length-possivelPosicaoY)) { // Colocando no começo da rota, porém no limite.
+						posicaoFinalX = espacoAereo.length-1;
+						posicaoFinalY = possivelPosicaoY+(espacoAereo.length-possivelPosicaoX-1);
+						direcaoFinalVoo = direcaoPossivelVoo;
 					} else {
-						rotaOcupada = false;
-						aviaoTurbo = true;
-						posicaoFinalX = possivelPosicaoX;
-						posicaoFinalY = possivelPosicaoY;
+						posicaoFinalX = possivelPosicaoX+(espacoAereo[0].length-possivelPosicaoY-1);
+						posicaoFinalY = espacoAereo[0].length-1;
 						direcaoFinalVoo = direcaoPossivelVoo;
 					}
-					break;
-				case "RVC" : // FOR : varrer uma coluna para descobrir se a rota está vazia.
-					if(aviaoNaVertical(possivelPosicaoY)) {
-						rotaOcupada = true;
-						break;
-					} else {
-						rotaOcupada = false;
-						aviaoTurbo = true;
-						posicaoFinalX = possivelPosicaoX;
-						posicaoFinalY = possivelPosicaoY;
-						direcaoFinalVoo = direcaoPossivelVoo;
-					}
-					break;
-				case "RVD" : // Mesma coisa do RVD.
-					if(aviaoNaVertical(possivelPosicaoY)) {
-						rotaOcupada = true;
-						break;
-					} else {
-						rotaOcupada = false;
-						aviaoTurbo = true;
-						posicaoFinalX = possivelPosicaoX;
-						posicaoFinalY = possivelPosicaoY;
-						direcaoFinalVoo = direcaoPossivelVoo;
-					}
-					break;
-				case "RHC" : // FOR : varrer uma linha para descobrir se a rota está vazia.
-					if(aviaoNaHorizontal(possivelPosicaoX)) {
-						rotaOcupada = true;
-						break;
-					} else {
-						rotaOcupada = false;
-						aviaoTurbo = true;
-						posicaoFinalX = possivelPosicaoX;
-						posicaoFinalY = possivelPosicaoY;
-						direcaoFinalVoo = direcaoPossivelVoo;
-					}
-					break;
-				case "RHD" : // Mesca coisa do RHD.
-					if(aviaoNaHorizontal(possivelPosicaoX)) {
-						rotaOcupada = true;
-						break;
-					} else {
-						rotaOcupada = false;
-						aviaoTurbo = true;
-						posicaoFinalX = possivelPosicaoX;
-						posicaoFinalY = possivelPosicaoY;
-						direcaoFinalVoo = direcaoPossivelVoo;
-					}
-					break;
-				default : break;
 				}
-			} while(rotaOcupada);
-			break;
-		default : break;
-		}
+				break;
+			case "RVC" : // FOR : varrer uma coluna para descobrir se a rota está vazia.
+				if(aviaoNaVertical(possivelPosicaoY)) {
+					rotaOcupada = true;
+					break;
+				} else {
+					rotaOcupada = false;
+					posicaoFinalX = 0;
+					posicaoFinalY = possivelPosicaoY;
+					direcaoFinalVoo = direcaoPossivelVoo;
+				}
+				break;
+			case "RVD" : // Mesma coisa do RVD.
+				if(aviaoNaVertical(possivelPosicaoY)) {
+					rotaOcupada = true;
+					break;
+				} else {
+					rotaOcupada = false;
+					posicaoFinalX = espacoAereo.length;
+					posicaoFinalY = possivelPosicaoY;
+					direcaoFinalVoo = direcaoPossivelVoo;
+				}
+				break;
+			case "RHC" : // FOR : varrer uma linha para descobrir se a rota está vazia.
+				if(aviaoNaHorizontal(possivelPosicaoX)) {
+					rotaOcupada = true;
+					break;
+				} else {
+					rotaOcupada = false;
+					posicaoFinalX = possivelPosicaoX;
+					posicaoFinalY = 0;
+					direcaoFinalVoo = direcaoPossivelVoo;
+				}
+				break;
+			case "RHD" : // Mesca coisa do RHD.
+				if(aviaoNaHorizontal(possivelPosicaoX)) {
+					rotaOcupada = true;
+					break;
+				} else {
+					rotaOcupada = false;
+					posicaoFinalX = possivelPosicaoX;
+					posicaoFinalY = espacoAereo[0].length;
+					direcaoFinalVoo = direcaoPossivelVoo;
+				}
+				break;
+			default : break;
+			}
+		} while(rotaOcupada);
 
 		// Definindo o combustivelMax.
 		int combustivelMax;
@@ -395,7 +311,7 @@ public class EspacoAereo {
 		}
 
 		// Criando avião.
-		if(aviaoTurbo) {
+		if(gerador.nextInt(2) == 0) {
 			// Criando o avião turbo e jogando ele na matriz (espaco aéreo).
 			AviaoTurbo av = new AviaoTurbo(("AvT_" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoFinalVoo, posicaoFinalX, posicaoFinalY, false);
 			espacoAereo[posicaoFinalX][posicaoFinalY] = av;
