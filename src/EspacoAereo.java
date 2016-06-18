@@ -27,7 +27,7 @@ public class EspacoAereo {
 	public Aviao[][] getEspacoAereo() {
 		return espacoAereo;
 	}
-	
+
 	public int getQuantTotalAvioes() {
 		return quantTotalAvioes;
 	}
@@ -35,7 +35,7 @@ public class EspacoAereo {
 	public int getQuantAvioesSairam() {
 		return quantAvioesSairam;
 	}
-	
+
 	public String getAvioesMudaramDirecao() {
 		if(avioesMudaramDirecao.equals("")) {
 			return "Nenhum aviao alterou sua rota.";
@@ -312,7 +312,7 @@ public class EspacoAereo {
 				default : break;
 				}
 			} while(rotaOcupada);
-			
+
 			if(contadorRepeticoes == 5) {
 				break;
 			} else {
@@ -574,30 +574,30 @@ public class EspacoAereo {
 	}
 
 	// metodo mudando ID
-		private void criandoId(String direcaoVoo, int linha, int coluna) {
-			String id = espacoAereo[linha][coluna].getId();
-			String numeroAviao = "";
-			for(int i = 4; i < id.length(); i++) {
-				numeroAviao += "" + id.charAt(i);
-			}
-			if(direcaoVoo.equals("DD") || direcaoVoo.equals("DC")) {
-				espacoAereo[linha][coluna].setId(direcaoVoo + "__" + numeroAviao);
-			} else {
-				espacoAereo[linha][coluna].setId(direcaoVoo + "_" + numeroAviao);
-			}
-			
+	private void criandoId(String direcaoVoo, int linha, int coluna) {
+		String id = espacoAereo[linha][coluna].getId();
+		String numeroAviao = "";
+		for(int i = 4; i < id.length(); i++) {
+			numeroAviao += "" + id.charAt(i);
 		}
-	
+		if(direcaoVoo.equals("DD") || direcaoVoo.equals("DC")) {
+			espacoAereo[linha][coluna].setId(direcaoVoo + "__" + numeroAviao);
+		} else {
+			espacoAereo[linha][coluna].setId(direcaoVoo + "_" + numeroAviao);
+		}
+
+	}
+
 	// Metodo complementar do movimentoBaseadoNaDirecao() para verificar se a proxima posicao tem algum aviao antes de movimentar o aviao, e depois movimentar.
 	private void caminhoLivre(int i, int j) {
 		if(espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()] != null) {
 			if(espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].getTentouMudar() == 2) {
-				
+
 				// Alterando a direcao do aviao a frente caso foi tentado mover mais que 2 vezes
 				Random gerador = new Random(346788);
 				String direcaoAlterada = direcaoVoo[gerador.nextInt(6)];
 				avioesMudaramDirecao += espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].getId() + " => " + direcaoAlterada;
-				
+
 				// Mudando ID baseado na direcao mas nao muda o numero do aviao.
 				criandoId(direcaoAlterada, espacoAereo[i][j].getProximaLinha(), espacoAereo[i][j].getProximaColuna());
 				espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].setDirecaoVoo(direcaoAlterada);
@@ -796,7 +796,7 @@ public class EspacoAereo {
 			}
 		}
 	}
-	
+
 	// Metodo para retornar informacoes sobre um aviao.
 	public String informacoesAviao(String id) {
 		String informacao = "";
@@ -806,14 +806,75 @@ public class EspacoAereo {
 					if(espacoAereo[i][j].getId().equals(id)) {
 						informacao += "O aviao " + id + " foi encontrado na posicao: \nLinha: " + i + ", coluna: " + j + "\n\n"
 								+ "A sua velocidade atual eh: " + espacoAereo[i][j].getVelocidade() + "\n"
-										+ "E resta " + espacoAereo[i][j].getCombustivel() + " litros de combustivel."; 
+								+ "E resta " + espacoAereo[i][j].getCombustivel() + " litros de combustivel."; 
 					}
 				}
 			}
 		}
 		return informacao;
 	}
-	
-	
+
+	// Metodo para achar os avioes em uma determinada rota
+	public String avioesNumaRotaX(String direcao, int linha, int coluna) {
+		String informacao = "";
+
+		if(direcao.equals("RHC") || direcao.equals("RHD")) { // Rota Horizontal
+			for(int i = 0; i < espacoAereo[0].length; i++) {
+				if(espacoAereo[linha][i] != null) {
+					informacao += espacoAereo[linha][i].getId() + "\n";
+				} else {
+					// Nao faz nada.
+				}
+			}
+		} else { // Rota Vertical
+
+			if(direcao.equals("RVC") || direcao.equals("RVD")) {
+				for(int i = 0; i < espacoAereo.length; i++) {
+					if(espacoAereo[i][coluna] != null) {
+						informacao += espacoAereo[linha][i].getId() + "\n";
+					} else {
+						// Nao faz nada.
+					}
+				}
+			} else { // Rota Diagonal
+
+				int contaLinha, contaColuna;
+				if(linha <= coluna) {
+					contaLinha = 0;
+					contaColuna = coluna-linha;
+					for(int i = coluna-linha; i < espacoAereo[0].length; i++) {
+						if((contaLinha < espacoAereo.length) || (contaColuna < espacoAereo[0].length)) {
+							if(espacoAereo[contaLinha][contaColuna] != null) {
+								informacao += espacoAereo[linha][i].getId() + "\n";
+							} else {
+								// Nao faz nada.
+							}
+						} else {
+							// Nao faz nada.
+						}
+						contaLinha++;
+						contaColuna++;
+					}	
+				} else {
+					contaLinha = linha-coluna;
+					contaColuna = 0;
+					for(int i = linha-coluna; i < espacoAereo.length; i++) {
+						if((contaLinha < espacoAereo.length) || (contaColuna < espacoAereo[0].length)) {
+							if(espacoAereo[contaLinha][contaColuna] != null) {
+								informacao += espacoAereo[linha][i].getId() + "\n";
+							} else {
+								// Nao faz nada.
+							}
+						} else {
+							// Nao faz nada.
+						}
+						contaLinha++;
+						contaColuna++;
+					}
+				}
+			}
+		}
+		return informacao;
+	}
 
 }
