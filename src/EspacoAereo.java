@@ -4,7 +4,8 @@ public class EspacoAereo {
 
 	private Aviao[][] espacoAereo;
 	private int quantTotalAvioes, quantAvioesSairam;
-	String[] direcaoVoo = {"DC", "DD", "RVC", "RVD", "RHC", "RHD"};
+	private String[] direcaoVoo = {"DC", "DD", "RVC", "RVD", "RHC", "RHD"};
+	private String avioesMudaramDirecao;
 
 	public EspacoAereo() {
 		super();
@@ -20,6 +21,7 @@ public class EspacoAereo {
 		espacoAereo = new Aviao[tamanhoLinha][tamanhoColuna];
 		quantTotalAvioes = 0;
 		quantAvioesSairam = 0;
+		avioesMudaramDirecao = "";
 	}
 
 	public Aviao[][] getEspacoAereo() {
@@ -32,6 +34,14 @@ public class EspacoAereo {
 
 	public int getQuantAvioesSairam() {
 		return quantAvioesSairam;
+	}
+	
+	public String getAvioesMudaramDirecao() {
+		if(avioesMudaramDirecao.equals("")) {
+			return "Nenhum aviao alterou sua rota.";
+		} else {
+			return avioesMudaramDirecao;
+		}
 	}
 
 	// Metodo complementar randomInicialDeAvioes(): achar um aviao na verdical.
@@ -357,13 +367,6 @@ public class EspacoAereo {
 			}
 		}
 	}
-	
-	// metodo para id
-	private String criandoId(String direcaoFinalVoo) {
-		String id = "";
-		
-		return id;
-	}
 
 	// Metodo inserindo um aviao pela borda, durante a execucao.
 	public void entrandoAviaoBorda() {
@@ -570,12 +573,34 @@ public class EspacoAereo {
 		}
 	}
 
+	// metodo mudando ID
+		private void criandoId(String direcaoVoo, int linha, int coluna) {
+			String id = espacoAereo[linha][coluna].getId();
+			String numeroAviao = "";
+			for(int i = 4; i < id.length(); i++) {
+				numeroAviao += "" + id.charAt(i);
+			}
+			if(direcaoVoo.equals("DD") || direcaoVoo.equals("DC")) {
+				espacoAereo[linha][coluna].setId(direcaoVoo + "__" + numeroAviao);
+			} else {
+				espacoAereo[linha][coluna].setId(direcaoVoo + "_" + numeroAviao);
+			}
+			
+		}
+	
 	// Metodo complementar do movimentoBaseadoNaDirecao() para verificar se a proxima posicao tem algum aviao antes de movimentar o aviao, e depois movimentar.
 	private void caminhoLivre(int i, int j) {
 		if(espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()] != null) {
 			if(espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].getTentouMudar() == 2) {
+				
+				// Alterando a direcao do aviao a frente caso foi tentado mover mais que 2 vezes
 				Random gerador = new Random(346788);
-				espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].setDirecaoVoo(direcaoVoo[gerador.nextInt(6)]);
+				String direcaoAlterada = direcaoVoo[gerador.nextInt(6)];
+				avioesMudaramDirecao += espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].getId() + " => " + direcaoAlterada;
+				
+				// Mudando ID baseado na direcao mas nao muda o numero do aviao.
+				criandoId(direcaoAlterada, espacoAereo[i][j].getProximaLinha(), espacoAereo[i][j].getProximaColuna());
+				espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].setDirecaoVoo(direcaoAlterada);
 				espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].setTentouMudar(0);
 				movimentoBaseadoNaDirecao(espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].getDirecaoVoo(), espacoAereo[i][j].getProximaLinha(), espacoAereo[i][j].getProximaColuna());
 			} else {
@@ -695,9 +720,9 @@ public class EspacoAereo {
 		String grafico = "X   |";
 		for(int k = 0; k < espacoAereo[0].length; k++) {
 			if((k) < 10) {
-				grafico += "       0" + k + "      ";
+				grafico += "     0" + k + "     ";
 			} else {
-				grafico += "       " + k + "       ";
+				grafico += "     " + k + "      ";
 			}
 		}
 		grafico += "\n";
@@ -731,7 +756,7 @@ public class EspacoAereo {
 					default : break;
 					}
 				} else {
-					grafico += "     --      ";
+					grafico += "     --     ";
 				}
 			}
 			grafico += "\n";
@@ -772,11 +797,23 @@ public class EspacoAereo {
 		}
 	}
 	
-	// Metodo para descobrir quais avioes estao em alguma rota.
-	public String avioesNaRotaX(String direcaoVoo, int linha, int colina) {
-		String idDosAvioes = "";
-		
-		return idDosAvioes;
+	// Metodo para retornar informacoes sobre um aviao.
+	public String informacoesAviao(String id) {
+		String informacao = "";
+		for(int i = 0; i < espacoAereo.length; i++) {
+			for(int j = 0; j < espacoAereo[0].length; j++) {
+				if(espacoAereo[i][j] != null) {
+					if(espacoAereo[i][j].getId().equals(id)) {
+						informacao += "O aviao " + id + " foi encontrado na posicao: \nLinha: " + i + ", coluna: " + j + "\n\n"
+								+ "A sua velocidade atual eh: " + espacoAereo[i][j].getVelocidade() + "\n"
+										+ "E resta " + espacoAereo[i][j].getCombustivel() + " litros de combustivel."; 
+					}
+				}
+			}
+		}
+		return informacao;
 	}
+	
+	
 
 }

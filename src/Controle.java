@@ -35,7 +35,8 @@ public class Controle {
 		}
 		
 		iu.mostraMensagem("Quantidade total de aviões criados: " + ea.getQuantTotalAvioes() + "\n"
-				+ "Quantidade total de aviões que sairam: " + ea.getQuantAvioesSairam());
+				+ "Quantidade total de aviões que sairam: " + ea.getQuantAvioesSairam() + "\n\n"
+						+ "Aviões que mudaram de rota: \n" + ea.getAvioesMudaramDirecao());
 
 	}
 
