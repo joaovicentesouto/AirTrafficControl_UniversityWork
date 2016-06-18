@@ -2,26 +2,26 @@
 public class Aviao {
 
 	private double velocidade;
-	private int combustivel, posicaoX, posicaoY, proximoX, proximoY;
+	private int combustivel, linhaAtual, colunaAtual, proximaLinha, proximaColuna, tentouMudar;
 	private String id, direcaoVoo, avanca;
-	private boolean alertaCombustivel, tentouMudar;
+	private boolean alertaCombustivel;
 
 	public Aviao() { // Construtor sem parametros.
 		super();
 	}
 
 	// Construtor com parametros.
-	public Aviao(String id, double velocidade, int combustivel, String direcaoVoo, int posicaoX, int posicaoY) {
+	public Aviao(String id, double velocidade, int combustivel, String direcaoVoo, int linhaAtual, int colunaAtual) {
 		this.id = id;
 		this.velocidade = velocidade;
 		this.combustivel = combustivel;
 		this.direcaoVoo = direcaoVoo;
-		this.posicaoX = posicaoX;
-		this.posicaoY = posicaoY;
-		proximoX = 0;
-		proximoY = 0;
+		this.linhaAtual = linhaAtual;
+		this.colunaAtual = colunaAtual;
+		proximaLinha = 0;
+		proximaColuna = 0;
 		alertaCombustivel = false;
-		tentouMudar = false;
+		tentouMudar = 0;
 		avanca = "Avanca";
 	}
 
@@ -66,11 +66,11 @@ public class Aviao {
 		this.alertaCombustivel = alertaCombustivel;
 	}
 	
-	public boolean getTentouMudar() {
+	public int getTentouMudar() {
 		return tentouMudar;
 	}
 	
-	public void setTentouMudar(boolean tentouMudar) {
+	public void setTentouMudar(int tentouMudar) {
 		this.tentouMudar = tentouMudar;
 	}
 	
@@ -83,65 +83,65 @@ public class Aviao {
 	}
 
 	// Getters e setters: Posições atuais.
-	public int getPosicaoX() {
-		return posicaoX;
+	public int getLinhaAtual() {
+		return linhaAtual;
 	}
 
-	public void setPosicaoX(int posicaoX) {
-		this.posicaoX = posicaoX;
+	public void setLinhaAtual(int linhaAtual) {
+		this.linhaAtual = linhaAtual;
 	}
 
-	public int getPosicaoY() {
-		return posicaoY;
+	public int getColunaAtual() {
+		return colunaAtual;
 	}
 
-	public void setPosicaoY(int posicaoY) {
-		this.posicaoY = posicaoY;
+	public void setColunaAtual(int colunaAtual) {
+		this.colunaAtual = colunaAtual;
 	}
 
 	// Getters e setters: Próximas posições.
-	public int getProximoX() {
-		return proximoX;
+	public int getProximaLinha() {
+		return proximaLinha;
 	}
 
-	public void setProximoX(int proximoX) {
-		this.proximoX = proximoX;
+	public void setProximaLinha(int proximaLinha) {
+		this.proximaLinha = proximaLinha;
 	}
 
-	public int getProximoY() {
-		return proximoY;
+	public int getProximaColuna() {
+		return proximaColuna;
 	}
 
-	public void setProximoY(int proximoY) {
-		this.proximoY = proximoY;
+	public void setProximaColuna(int proximaColuna) {
+		this.proximaColuna = proximaColuna;
 	}
 
 	// Método para encontrar a próxima posição. Executado sempre que o avião for mudado para outra posição.
 	public void proximaPosicao() {
 		switch (this.direcaoVoo) {
 		case "DC" :
-			proximoX = posicaoX+1;
-			proximoY = posicaoY+1;
+			proximaLinha = linhaAtual+1;
+			proximaColuna = colunaAtual+1;
 			break;
 		case "DD" :
-			proximoX = posicaoX-1;
-			proximoY = posicaoY-1;
+			proximaLinha = linhaAtual-1;
+			proximaColuna = colunaAtual-1;
 			break;
 		case "RVC" :
-			proximoX = posicaoX+1;
-			proximoY = posicaoY;
+			proximaLinha = linhaAtual+1;
+			proximaColuna = colunaAtual;
 			break;
 		case "RVD" :
-			proximoX = posicaoX-1;
-			proximoY = posicaoY;
+			proximaLinha = linhaAtual-1;
+			proximaColuna = colunaAtual;
 			break;
 		case "RHC" :
-			proximoX = posicaoX;
-			proximoY = posicaoY+1;
+			proximaLinha = linhaAtual;
+			proximaColuna = colunaAtual+1;
 			break;
 		case "RHD" :
-			proximoX = posicaoX;
-			proximoY = posicaoY-1;
+			proximaLinha = linhaAtual;
+			proximaColuna = colunaAtual-1;
 			break;
 		default : break;
 		}
@@ -181,6 +181,58 @@ public class Aviao {
 		}
 	}
 	
-	
+	// Metodo de incremento do tentouMudar
+	public void incrementoTentouMudar() {
+		tentouMudar++;
+	}
+
+	@Override
+	public String toString() {
+		return "Aviao [velocidade=" + velocidade + ", combustivel=" + combustivel + ", linhaAtual=" + linhaAtual
+				+ ", colunaAtual=" + colunaAtual + ", proximaLinha=" + proximaLinha + ", proximaColuna=" + proximaColuna
+				+ ", tentouMudar=" + tentouMudar + ", id=" + id + ", direcaoVoo=" + direcaoVoo + ", avanca=" + avanca
+				+ ", alertaCombustivel=" + alertaCombustivel + "]";
+	}
+
+	public boolean equals(Aviao aviaoX) {
+		if (this == aviaoX)
+			return true;
+		if (aviaoX == null)
+			return false;
+		if (getClass() != aviaoX.getClass())
+			return false;
+		if (alertaCombustivel != aviaoX.alertaCombustivel)
+			return false;
+		if (avanca == null) {
+			if (aviaoX.avanca != null)
+				return false;
+		} else if (!avanca.equals(aviaoX.avanca))
+			return false;
+		if (colunaAtual != aviaoX.colunaAtual)
+			return false;
+		if (combustivel != aviaoX.combustivel)
+			return false;
+		if (direcaoVoo == null) {
+			if (aviaoX.direcaoVoo != null)
+				return false;
+		} else if (!direcaoVoo.equals(aviaoX.direcaoVoo))
+			return false;
+		if (id == null) {
+			if (aviaoX.id != null)
+				return false;
+		} else if (!id.equals(aviaoX.id))
+			return false;
+		if (linhaAtual != aviaoX.linhaAtual)
+			return false;
+		if (proximaColuna != aviaoX.proximaColuna)
+			return false;
+		if (proximaLinha != aviaoX.proximaLinha)
+			return false;
+		if (tentouMudar != aviaoX.tentouMudar)
+			return false;
+		if (Double.doubleToLongBits(velocidade) != Double.doubleToLongBits(aviaoX.velocidade))
+			return false;
+		return true;
+	}
 	
 }
