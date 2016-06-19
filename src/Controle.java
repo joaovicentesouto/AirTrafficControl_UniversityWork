@@ -28,9 +28,14 @@ public class Controle {
 		
 		int periodoDeTempo = iu.informeInt("Informe o período de tempo para a simulação:");
 		iu.mostraMensagem(ea.graficoEspacoAereo());
+		
 		// FOR : para a simulação em um período de tempo
 		for(int i = 0; i < periodoDeTempo; i++) {
+			
 			ea.atualizarEspacoAereo();
+			if((i%5) == 0) {
+				ea.entrandoAviaoBorda();
+			}
 			iu.mostraMensagem(ea.graficoEspacoAereo());
 		}
 		
