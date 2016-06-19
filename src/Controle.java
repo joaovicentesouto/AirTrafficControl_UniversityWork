@@ -11,7 +11,7 @@ public class Controle {
 		// Criando aviões
 		ea.randomInicialDeAvioes();
 		
-		/* Teste colocando manualmente
+		/*Teste colocando manualmente
 		ea.inserirAviao(3, 0, "RHC", false);
 		ea.inserirAviao(0, 3, "RVC", true);
 		ea.inserirAviao(4, 0, "RHC", false);

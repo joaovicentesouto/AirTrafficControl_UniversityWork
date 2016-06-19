@@ -531,6 +531,7 @@ public class EspacoAereo {
 			for(int j = 0; j < espacoAereo[0].length; j++) {
 				if(espacoAereo[i][j] != null) {
 					espacoAereo[i][j].proximaPosicao();
+					espacoAereo[i][j].setJaMovimentado(false);
 				} else {
 					// Nada.
 				}
@@ -602,45 +603,49 @@ public class EspacoAereo {
 	private void movimentoGenerico(String direcao, int i, int j) {
 
 		proximaPosicaoTodos();
-
-		if((espacoAereo[i][j].getProximaLinha() < 0) || (espacoAereo[i][j].getProximaLinha() >= espacoAereo.length)
-				|| (espacoAereo[i][j].getProximaColuna() < 0) || (espacoAereo[i][j].getProximaColuna() >= espacoAereo[0].length)) {
-			espacoAereo[i][j] = null;
-			quantAvioesSairam++;
-		} else { 
-			if(espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()] != null) {
-				if(espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].getTentouMudar() == 1) {
-
-					// Alterando a direcao do aviao a frente caso foi tentado mover mais que 2 vezes
-					Random gerador = new Random();
-					String direcaoAlterada = direcaoVoo[gerador.nextInt(6)];
-					avioesMudaramDirecao += espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].getId() + " => ";
-
-					// Mudando ID baseado na direcao mas nao muda o numero do aviao.
-
-					String id = espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].getId();
-					String numeroAviao = "";
-					for(int letra = 4; letra < id.length(); letra++) {
-						numeroAviao += "" + id.charAt(letra);
-					}
-					if(direcaoAlterada.equals("DD") || direcaoAlterada.equals("DC")) {
-						espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].setId(direcaoAlterada + "__" + numeroAviao);
-					} else {
-						espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].setId(direcaoAlterada + "_" + numeroAviao);
-					}
-					espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].setDirecaoVoo(direcaoAlterada);
-					espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].setTentouMudar(0);
-					avioesMudaramDirecao += espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].getId() + "\n";
-				} else {
-					espacoAereo[i][j].incrementoTentouMudar();
-				}
-				espacoAereo[i][j].velocDown();
-			} else {
-				espacoAereo[i][j].setTentouMudar(0);
-				espacoAereo[i][j].setLinhaAtual(espacoAereo[i][j].getProximaLinha());
-				espacoAereo[i][j].setColunaAtual(espacoAereo[i][j].getProximaColuna());
-				espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()] = espacoAereo[i][j];
+		if(espacoAereo[i][j].getJaMovimentado()) {
+			
+		} else {
+			if((espacoAereo[i][j].getProximaLinha() < 0) || (espacoAereo[i][j].getProximaLinha() >= espacoAereo.length)
+					|| (espacoAereo[i][j].getProximaColuna() < 0) || (espacoAereo[i][j].getProximaColuna() >= espacoAereo[0].length)) {
 				espacoAereo[i][j] = null;
+				quantAvioesSairam++;
+			} else { 
+				if(espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()] != null) {
+					if(espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].getTentouMudar() == 1) {
+
+						// Alterando a direcao do aviao a frente caso foi tentado mover mais que 2 vezes
+						Random gerador = new Random();
+						String direcaoAlterada = direcaoVoo[gerador.nextInt(6)];
+						avioesMudaramDirecao += espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].getId() + " => ";
+
+						// Mudando ID baseado na direcao mas nao muda o numero do aviao.
+
+						String id = espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].getId();
+						String numeroAviao = "";
+						for(int letra = 4; letra < id.length(); letra++) {
+							numeroAviao += "" + id.charAt(letra);
+						}
+						if(direcaoAlterada.equals("DD") || direcaoAlterada.equals("DC")) {
+							espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].setId(direcaoAlterada + "__" + numeroAviao);
+						} else {
+							espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].setId(direcaoAlterada + "_" + numeroAviao);
+						}
+						espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].setDirecaoVoo(direcaoAlterada);
+						espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].setTentouMudar(0);
+						avioesMudaramDirecao += espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].getId() + "\n";
+					} else {
+						espacoAereo[i][j].incrementoTentouMudar();
+					}
+					espacoAereo[i][j].velocDown();
+				} else {
+					espacoAereo[i][j].setTentouMudar(0);
+					espacoAereo[i][j].setJaMovimentado(true);
+					espacoAereo[i][j].setLinhaAtual(espacoAereo[i][j].getProximaLinha());
+					espacoAereo[i][j].setColunaAtual(espacoAereo[i][j].getProximaColuna());
+					espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()] = espacoAereo[i][j];
+					espacoAereo[i][j] = null;
+				}
 			}
 		}
 	}

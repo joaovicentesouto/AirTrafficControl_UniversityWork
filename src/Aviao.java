@@ -4,7 +4,7 @@ public class Aviao {
 	private double velocidade;
 	private int combustivel, linhaAtual, colunaAtual, proximaLinha, proximaColuna, tentouMudar;
 	private String id, direcaoVoo, avanca;
-	private boolean alertaCombustivel;
+	private boolean alertaCombustivel, jaMovimentado;
 
 	public Aviao() { // Construtor sem parametros.
 		super();
@@ -23,6 +23,17 @@ public class Aviao {
 		alertaCombustivel = false;
 		tentouMudar = 0;
 		avanca = "Avanca";
+		jaMovimentado = false;
+	}
+
+	
+	
+	public boolean getJaMovimentado() {
+		return jaMovimentado;
+	}
+
+	public void setJaMovimentado(boolean jaMovimentado) {
+		this.jaMovimentado = jaMovimentado;
 	}
 
 	// Getters e setters.
