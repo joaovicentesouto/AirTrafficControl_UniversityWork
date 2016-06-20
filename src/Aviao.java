@@ -1,3 +1,4 @@
+import javax.swing.JOptionPane;
 
 public class Aviao {
 
@@ -24,16 +25,6 @@ public class Aviao {
 		tentouMudar = 0;
 		avanca = "Avanca";
 		jaMovimentado = false;
-	}
-
-	
-	
-	public boolean getJaMovimentado() {
-		return jaMovimentado;
-	}
-
-	public void setJaMovimentado(boolean jaMovimentado) {
-		this.jaMovimentado = jaMovimentado;
 	}
 
 	// Getters e setters.
@@ -91,6 +82,14 @@ public class Aviao {
 	
 	public void setAvanca(String avanca) {
 		this.avanca = avanca;
+	}
+	
+	public boolean getJaMovimentado() {
+		return jaMovimentado;
+	}
+
+	public void setJaMovimentado(boolean jaMovimentado) {
+		this.jaMovimentado = jaMovimentado;
 	}
 
 	// Getters e setters: Posições atuais.
@@ -187,8 +186,14 @@ public class Aviao {
 	// Método consumo do combustível.
 	public void consumoCombustivel() {
 		combustivel--;
-		if(combustivel <= 10) {
+		if(combustivel <= 25) {
 			alertaCombustivel = true;
+			if(combustivel == 25) {
+				JOptionPane.showMessageDialog(null, "Alerta de combustivel do aviao: " + id + ".\nMenos de 25 litros para acabar.");
+			}
+			if(combustivel == 0) { // Para teste, ver se alguem ficou sem combustivel.
+				JOptionPane.showMessageDialog(null, "Ficou sem combustivel" + id);
+			}
 		}
 	}
 	
@@ -197,51 +202,55 @@ public class Aviao {
 		tentouMudar++;
 	}
 
+	
+	// toString() e equals()
 	@Override
 	public String toString() {
 		return "Aviao [velocidade=" + velocidade + ", combustivel=" + combustivel + ", linhaAtual=" + linhaAtual
-				+ ", colunaAtual=" + colunaAtual + ", proximaLinha=" + proximaLinha + ", proximaColuna=" + proximaColuna
-				+ ", tentouMudar=" + tentouMudar + ", id=" + id + ", direcaoVoo=" + direcaoVoo + ", avanca=" + avanca
-				+ ", alertaCombustivel=" + alertaCombustivel + "]";
+				+ ",\n colunaAtual=" + colunaAtual + ", proximaLinha=" + proximaLinha + ", proximaColuna=" + proximaColuna
+				+ ",\n tentouMudar=" + tentouMudar + ", id=" + id + ", direcaoVoo=" + direcaoVoo + ", avanca=" + avanca
+				+ ",\n alertaCombustivel=" + alertaCombustivel + ", jaMovimentado=" + jaMovimentado + "]";
 	}
 
-	public boolean equals(Aviao aviaoX) {
-		if (this == aviaoX)
+	public boolean equals(Aviao aviao) {
+		if (this == aviao)
 			return true;
-		if (aviaoX == null)
+		if (aviao == null)
 			return false;
-		if (getClass() != aviaoX.getClass())
+		if (getClass() != aviao.getClass())
 			return false;
-		if (alertaCombustivel != aviaoX.alertaCombustivel)
+		if (alertaCombustivel != aviao.alertaCombustivel)
 			return false;
 		if (avanca == null) {
-			if (aviaoX.avanca != null)
+			if (aviao.avanca != null)
 				return false;
-		} else if (!avanca.equals(aviaoX.avanca))
+		} else if (!avanca.equals(aviao.avanca))
 			return false;
-		if (colunaAtual != aviaoX.colunaAtual)
+		if (colunaAtual != aviao.colunaAtual)
 			return false;
-		if (combustivel != aviaoX.combustivel)
+		if (combustivel != aviao.combustivel)
 			return false;
 		if (direcaoVoo == null) {
-			if (aviaoX.direcaoVoo != null)
+			if (aviao.direcaoVoo != null)
 				return false;
-		} else if (!direcaoVoo.equals(aviaoX.direcaoVoo))
+		} else if (!direcaoVoo.equals(aviao.direcaoVoo))
 			return false;
 		if (id == null) {
-			if (aviaoX.id != null)
+			if (aviao.id != null)
 				return false;
-		} else if (!id.equals(aviaoX.id))
+		} else if (!id.equals(aviao.id))
 			return false;
-		if (linhaAtual != aviaoX.linhaAtual)
+		if (jaMovimentado != aviao.jaMovimentado)
 			return false;
-		if (proximaColuna != aviaoX.proximaColuna)
+		if (linhaAtual != aviao.linhaAtual)
 			return false;
-		if (proximaLinha != aviaoX.proximaLinha)
+		if (proximaColuna != aviao.proximaColuna)
 			return false;
-		if (tentouMudar != aviaoX.tentouMudar)
+		if (proximaLinha != aviao.proximaLinha)
 			return false;
-		if (Double.doubleToLongBits(velocidade) != Double.doubleToLongBits(aviaoX.velocidade))
+		if (tentouMudar != aviao.tentouMudar)
+			return false;
+		if (Double.doubleToLongBits(velocidade) != Double.doubleToLongBits(aviao.velocidade))
 			return false;
 		return true;
 	}

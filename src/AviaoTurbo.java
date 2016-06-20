@@ -55,21 +55,23 @@ public class AviaoTurbo extends Aviao {
 
 	@Override
 	public String toString() {
-		return "AviaoTurbo [turboLigado=" + turboLigado + "]";
+		return super.toString() + "AviaoTurbo [turboLigado=" + turboLigado + "]";
 	}
 
 	public boolean equals(AviaoTurbo aviaoT) {
-		if (this == aviaoT)
+		if(super.equals(aviaoT)) {
+			if (this == aviaoT)
+				return true;
+			if (aviaoT == null)
+				return false;
+			if (getClass() != aviaoT.getClass())
+				return false;
+			if (turboLigado != aviaoT.turboLigado)
+				return false;
 			return true;
-		if (aviaoT == null)
+		} else {
 			return false;
-		if (getClass() != aviaoT.getClass())
-			return false;
-		if (turboLigado != aviaoT.turboLigado)
-			return false;
-		return true;
+		}
 	}
-
 	
-
 }

@@ -44,7 +44,9 @@ public class EspacoAereo {
 		}
 	}
 
-	// Metodo complementar randomInicialDeAvioes(): achar um aviao na verdical.
+// --- Metodos do randomInicialDeAvioes() ----------
+	
+	// Metodo complementar: se achar um aviao na verdical.
 	private boolean aviaoNaVertical(int coluna) {
 		boolean achei = false;
 		for(int i = 0; i < espacoAereo.length; i++) {
@@ -62,7 +64,7 @@ public class EspacoAereo {
 		return achei;
 	}
 
-	// Metodo complementar randomInicialDeAvioes(): achar um aviao na horizontal.
+	// Metodo complementar: achar um aviao na horizontal.
 	private boolean aviaoNaHorizontal(int linha) {
 		boolean achei = false;
 		for(int i = 0; i < espacoAereo[0].length; i++) {
@@ -80,7 +82,7 @@ public class EspacoAereo {
 		return achei;
 	}
 
-	// Metodo complementar randomInicialDeAvioes(): achar um aviao na diagonal.
+	// Metodo complementar: achar um aviao na diagonal.
 	private boolean aviaoNaDiagonal(int linha, int coluna) {
 		boolean achei = false;
 		int contaLinha = 0, contaColuna = 0;
@@ -130,7 +132,7 @@ public class EspacoAereo {
 		return achei;
 	}
 
-	// Metodo de povoamento
+	// Metodo principal de povoamento
 	public void randomInicialDeAvioes() {
 		Random gerador = new Random();
 		int quantMaxAvioes = ((espacoAereo.length*espacoAereo[0].length)/3);
@@ -138,9 +140,9 @@ public class EspacoAereo {
 		// Definindo o combustivelMax.
 		int combustivelMax;
 		if(espacoAereo.length >= espacoAereo[0].length) {
-			combustivelMax = espacoAereo.length+10;
+			combustivelMax = espacoAereo.length+25;
 		} else {
-			combustivelMax = espacoAereo[0].length+10;
+			combustivelMax = espacoAereo[0].length+25;
 		}
 
 		for(int i = 0; i < quantMaxAvioes; i++){
@@ -149,6 +151,7 @@ public class EspacoAereo {
 			boolean rotaOcupada = true;
 
 			do { // DO WHILE para verificar se posso colocar um aviao em determinada rota.
+				
 				String direcaoPossivelVoo = direcaoVoo[gerador.nextInt(6)];
 				int possivelLinha = gerador.nextInt(espacoAereo.length);
 				int possivelColuna = gerador.nextInt(espacoAereo[0].length);
@@ -156,20 +159,10 @@ public class EspacoAereo {
 				case "DC" :
 					if(espacoAereo[possivelLinha][possivelColuna] != null) {
 						contadorRepeticoes++;
-						if(contadorRepeticoes == 5) {
-							rotaOcupada = false;
-						} else {
-							rotaOcupada = true;
-						}
 						break;
 					} else {
-						if(aviaoNaDiagonal(possivelLinha, possivelColuna)) { // Esse IF verifica qual eh maior para definir qual vai ser a posicao inicial da rota.
+						if(aviaoNaDiagonal(possivelLinha, possivelColuna)) {
 							contadorRepeticoes++;
-							if(contadorRepeticoes == 5) {
-								rotaOcupada = false;
-							} else {
-								rotaOcupada = true;
-							}
 							break;
 						} else { // caso todas as posicoes estejam vazias ele, ele termina com a rota false e passa adiante a posicao.
 							rotaOcupada = false;
@@ -182,20 +175,10 @@ public class EspacoAereo {
 				case "DD" :
 					if(espacoAereo[possivelLinha][possivelColuna] != null) {
 						contadorRepeticoes++;
-						if(contadorRepeticoes == 5) {
-							rotaOcupada = false;
-						} else {
-							rotaOcupada = true;
-						}
 						break;
 					} else {
 						if(aviaoNaDiagonal(possivelLinha, possivelColuna)) { // Mesma logica para a diagonal crescente
 							contadorRepeticoes++;
-							if(contadorRepeticoes == 5) {
-								rotaOcupada = false;
-							} else {
-								rotaOcupada = true;
-							}
 							break;
 						} else {
 							rotaOcupada = false;
@@ -208,20 +191,10 @@ public class EspacoAereo {
 				case "RVC" : // FOR : varrer uma coluna para descobrir se a rota esta vazia.
 					if(espacoAereo[possivelLinha][possivelColuna] != null) {
 						contadorRepeticoes++;
-						if(contadorRepeticoes == 5) {
-							rotaOcupada = false;
-						} else {
-							rotaOcupada = true;
-						}
 						break;
 					} else {
 						if(aviaoNaVertical(possivelColuna)) {
 							contadorRepeticoes++;
-							if(contadorRepeticoes == 5) {
-								rotaOcupada = false;
-							} else {
-								rotaOcupada = true;
-							}
 							break;
 						} else {
 							rotaOcupada = false;
@@ -234,20 +207,10 @@ public class EspacoAereo {
 				case "RVD" : // Mesma coisa do RVD.
 					if(espacoAereo[possivelLinha][possivelColuna] != null) {
 						contadorRepeticoes++;
-						if(contadorRepeticoes == 5) {
-							rotaOcupada = false;
-						} else {
-							rotaOcupada = true;
-						}
 						break;
 					} else {
 						if(aviaoNaVertical(possivelColuna)) {
 							contadorRepeticoes++;
-							if(contadorRepeticoes == 5) {
-								rotaOcupada = false;
-							} else {
-								rotaOcupada = true;
-							}
 							break;
 						} else {
 							rotaOcupada = false;
@@ -260,20 +223,10 @@ public class EspacoAereo {
 				case "RHC" : // FOR : varrer uma linha para descobrir se a rota esta vazia.
 					if(espacoAereo[possivelLinha][possivelColuna] != null) {
 						contadorRepeticoes++;
-						if(contadorRepeticoes == 5) {
-							rotaOcupada = false;
-						} else {
-							rotaOcupada = true;
-						}
 						break;
 					} else {
 						if(aviaoNaHorizontal(possivelLinha)) {
 							contadorRepeticoes++;
-							if(contadorRepeticoes == 5) {
-								rotaOcupada = false;
-							} else {
-								rotaOcupada = true;
-							}
 							break;
 						} else {
 							rotaOcupada = false;
@@ -286,20 +239,10 @@ public class EspacoAereo {
 				case "RHD" : // Mesma coisa do RHD.
 					if(espacoAereo[possivelLinha][possivelColuna] != null) {
 						contadorRepeticoes++;
-						if(contadorRepeticoes == 5) {
-							rotaOcupada = false;
-						} else {
-							rotaOcupada = true;
-						}
 						break;
 					} else {
 						if(aviaoNaHorizontal(possivelLinha)) {
 							contadorRepeticoes++;
-							if(contadorRepeticoes == 5) {
-								rotaOcupada = false;
-							} else {
-								rotaOcupada = true;
-							}
 							break;
 						} else {
 							rotaOcupada = false;
@@ -311,14 +254,21 @@ public class EspacoAereo {
 					break;
 				default : break;
 				}
+				
+				// Sai do loop se tentar criar um aviao 6 vezes.
+				if(contadorRepeticoes == 5) {
+					rotaOcupada = false;
+				} else {
+					rotaOcupada = true;
+				}
 			} while(rotaOcupada);
 
+			// Caso tentar criar um aviao e entrar em um loop, ele tenta 6 vezes e para.
 			if(contadorRepeticoes == 5) {
 				break;
-			} else {
-				// Criando aviao.
-				if(gerador.nextInt(2) == 0) {
-					// Criando o aviao turbo e jogando ele na matriz (espaco aereo).
+			} else { // Caso não, cria o aviao.
+				
+				if(gerador.nextInt(2) == 0) {	// Criando aviao turbo
 					if(direcaoFinalVoo.equals("DD") || direcaoFinalVoo.equals("DC")) {
 						if((quantTotalAvioes+1) < 10) {
 							AviaoTurbo av = new AviaoTurbo((direcaoFinalVoo + "__0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoFinalVoo, linhaFinal, colunaFinal, false);
@@ -340,8 +290,7 @@ public class EspacoAereo {
 							quantTotalAvioes++;
 						}
 					}
-				} else {
-					// Criando o aviao e jogando ele na matriz (espaco aereo).
+				} else {	// Criando o aviao normal.
 					if(direcaoFinalVoo.equals("DD") || direcaoFinalVoo.equals("DC")) {
 						if((quantTotalAvioes+1) < 10) {
 							Aviao av = new Aviao((direcaoFinalVoo + "__0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoFinalVoo, linhaFinal, colunaFinal);
@@ -367,27 +316,31 @@ public class EspacoAereo {
 			}
 		}
 	}
+	
+// --- FIM --- Metodos do randomInicialDeAvioes() ----------
+	
+// --- Metodo entrandoAviaoBorda() ----------
+	// Usa alguns metodos do random de verificar se existem alguma aviao naquela rota com a mesma rota ou rota contraria.
 
-	// Metodo inserindo um aviao pela borda, durante a execucao.
-	public void entrandoAviaoBorda() {
+	public void entrandoAviaoBorda() { // Mesma logica do criador random de avioes mas coloca eles nas bordas aleatoriamente.
 		Random gerador = new Random();
 
 		String direcaoFinalVoo = null;
 		int linhaFinal = 0, colunaFinal = 0;
 		boolean rotaOcupada = true;
 
-		do { // DO WHILE para verificar se posso colocar um aviao em determinada rota.
+		do {
 			String direcaoPossivelVoo = direcaoVoo[gerador.nextInt(6)];
 			int possivelLinha = gerador.nextInt(espacoAereo.length);
 			int possivelColuna = gerador.nextInt(espacoAereo[0].length);
 			switch(direcaoPossivelVoo) {
 			case "DC" :
-				if(aviaoNaDiagonal(possivelLinha, possivelColuna)) { // Esse IF verifica qual eh maior para definir qual vai ser a posicao inicial da rota.
+				if(aviaoNaDiagonal(possivelLinha, possivelColuna)) {
 					rotaOcupada = true;
 					break;
-				} else { // caso todas as posicões estejam vazias ele, ele termina com a rota false e passa adiante a posicao.
+				} else {
 					rotaOcupada = false;
-					if(possivelLinha <= possivelColuna) { // Colocando no começo da rota.
+					if(possivelLinha <= possivelColuna) {
 						linhaFinal = 0;
 						colunaFinal = possivelColuna-possivelLinha;
 						direcaoFinalVoo = direcaoPossivelVoo;
@@ -399,12 +352,12 @@ public class EspacoAereo {
 				}
 				break;
 			case "DD" :
-				if(aviaoNaDiagonal(possivelLinha, possivelColuna)) { // Mesma lógica para a diagonal crescente
+				if(aviaoNaDiagonal(possivelLinha, possivelColuna)) {
 					rotaOcupada = true;
 					break;
 				} else {
 					rotaOcupada = false;
-					if((espacoAereo.length-possivelLinha) <= (espacoAereo[0].length-possivelColuna)) { // Colocando no começo da rota, porehm no limite.
+					if((espacoAereo.length-possivelLinha) <= (espacoAereo[0].length-possivelColuna)) {
 						linhaFinal = espacoAereo.length-1;
 						colunaFinal = possivelColuna+(espacoAereo.length-possivelLinha-1);
 						direcaoFinalVoo = direcaoPossivelVoo;
@@ -415,7 +368,7 @@ public class EspacoAereo {
 					}
 				}
 				break;
-			case "RVC" : // FOR : varrer uma coluna para descobrir se a rota está vazia.
+			case "RVC" :
 				if(aviaoNaVertical(possivelColuna)) {
 					rotaOcupada = true;
 					break;
@@ -426,7 +379,7 @@ public class EspacoAereo {
 					direcaoFinalVoo = direcaoPossivelVoo;
 				}
 				break;
-			case "RVD" : // Mesma coisa do RVD.
+			case "RVD" :
 				if(aviaoNaVertical(possivelColuna)) {
 					rotaOcupada = true;
 					break;
@@ -437,7 +390,7 @@ public class EspacoAereo {
 					direcaoFinalVoo = direcaoPossivelVoo;
 				}
 				break;
-			case "RHC" : // FOR : varrer uma linha para descobrir se a rota está vazia.
+			case "RHC" :
 				if(aviaoNaHorizontal(possivelLinha)) {
 					rotaOcupada = true;
 					break;
@@ -448,7 +401,7 @@ public class EspacoAereo {
 					direcaoFinalVoo = direcaoPossivelVoo;
 				}
 				break;
-			case "RHD" : // Mesca coisa do RHD.
+			case "RHD" :
 				if(aviaoNaHorizontal(possivelLinha)) {
 					rotaOcupada = true;
 					break;
@@ -466,14 +419,12 @@ public class EspacoAereo {
 		// Definindo o combustivelMax.
 		int combustivelMax;
 		if(espacoAereo.length >= espacoAereo[0].length) {
-			combustivelMax = espacoAereo.length+10;
+			combustivelMax = espacoAereo.length+25;
 		} else {
-			combustivelMax = espacoAereo[0].length+10;
+			combustivelMax = espacoAereo[0].length+25;
 		}
 
-		// Criando aviao.
-		if(gerador.nextInt(2) == 0) {
-			// Criando o aviao turbo e jogando ele na matriz (espaco aereo).
+		if(gerador.nextInt(2) == 0) {	// Criando o aviao turbo.
 			if(direcaoFinalVoo.equals("DD") || direcaoFinalVoo.equals("DC")) {
 				if((quantTotalAvioes+1) < 10) {
 					AviaoTurbo av = new AviaoTurbo((direcaoFinalVoo + "__0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoFinalVoo, linhaFinal, colunaFinal, false);
@@ -495,8 +446,7 @@ public class EspacoAereo {
 					quantTotalAvioes++;
 				}
 			}
-		} else {
-			// Criando o aviao e jogando ele na matriz (espaco aereo).
+		} else {	// Criando o aviao normal.
 			if(direcaoFinalVoo.equals("DD") || direcaoFinalVoo.equals("DC")) {
 				if((quantTotalAvioes+1) < 10) {
 					Aviao av = new Aviao((direcaoFinalVoo + "__0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoFinalVoo, linhaFinal, colunaFinal);
@@ -521,44 +471,46 @@ public class EspacoAereo {
 			}
 		}
 	}
+	
+// --- FIM --- Metodo entrandoAviaoBorda() ----------
 
-	// ------ Metodos PARA ATUALIZAR O ESPAÇO aereo ------  //
+// --- Metodos atualizarEspacoAereo() ----------
 
-	// Metodo complementar Atualizar EA: para atualizar a proxima posicao de todos os avioes.
+	// Metodo complementar atualizar...(): para atualizar a proxima posicao de todos os avioes.
 	private void proximaPosicaoTodos() {
-		// FOR pra percorrer a matriz todo, quando achar um aviao, executa o Metodo proximaPosicao() dele.
 		for(int i = 0; i < espacoAereo.length; i++) {
 			for(int j = 0; j < espacoAereo[0].length; j++) {
 				if(espacoAereo[i][j] != null) {
 					espacoAereo[i][j].proximaPosicao();
-					espacoAereo[i][j].setJaMovimentado(false);
 				} else {
-					// Nada.
+					// Nao faz nada.
 				}
 			}
 		}
 	}
 
-	// Metodo complementar Atualizar EA : deixa todos prontos para avançar no inicio, antes de verificar se podem ou Nao avançar.
+	// Metodo complementar atualizar...(): deixa todos prontos para avançar no inicio, antes de verificar se podem ou nao. E define false para jaMovimentado.
 	private void habilitarAvanco() {
 		for(int i = 0; i < espacoAereo.length; i++) {
 			for(int j = 0; j < espacoAereo[0].length; j++) {
-				if(espacoAereo[i][j] != null) { // Se existir um aviao nessa posicao.
+				if(espacoAereo[i][j] != null) {
 					espacoAereo[i][j].setAvanca("Avanca");
-					//espacoAereo[i][j].setTentouMudar(false);
+					espacoAereo[i][j].setJaMovimentado(false);
 				} else {
-					// Nada.
+					// Nao faz nada.
 				}
 			}
 		}
 	}
 
-	// Metodo complementar Atualizar EA: para verificar colisao e deixar desativado o avanço do aviao mais lento.
+	// Metodo complementar atualizar...(): para verificar colisao.
 	private void verificarColisao() {
+		
 		for(int i = 0; i < espacoAereo.length; i++) {
 			for(int j = 0; j < espacoAereo[0].length; j++) {
+				
 				if(espacoAereo[i][j] != null) { // Se encontrar o primeiro aviao.
-					// FOR para comparar a proxima posicao do aviao com todas as outras proximas prosicoes dos outros avioes.
+					
 					for(int k = 0; k < espacoAereo.length; k++) {
 						for(int l = 0; l < espacoAereo[0].length; l++) {
 
@@ -567,7 +519,7 @@ public class EspacoAereo {
 								if((i == k) && (j == l)) {
 									// Nada porque eh o mesmo aviao.
 								} else {
-									// Verifica colisao entre os dois avioes.
+									// Verifica colisao entre os dois avioes (mesmas posicoes).
 									if((espacoAereo[i][j].getProximaLinha() == espacoAereo[k][l].getProximaLinha()) &&
 											(espacoAereo[i][j].getProximaColuna() == espacoAereo[k][l].getProximaColuna())) {
 
@@ -584,33 +536,39 @@ public class EspacoAereo {
 											espacoAereo[i][j].setAvanca("Diminui");
 										}
 									} else {
-										// Nada porque ele Nao precisa mudar nada se os avioes Nao forem colidir.
+										// Nada porque ele nao precisa mudar nada se os avioes nao forem colidir.
 									}
 								}
 							} else {
-								// Nao faz nada porque Nao achou nenhum aviao.
+								// Nao faz nada porque nao achou nenhum aviao.
 							}
 						}
 					}
 				} else {
-					// Nao faz nada porque Nao achou nenhum aviao.
+					// Nao faz nada porque nao achou nenhum aviao.
 				}
 			}
 		}
 	}
 
-	// Metodo Complementar do movimentarAvioes() ...
+	// Metodo Complementar do movimentarAvioes(): que é complementar do atualizar...():
 	private void movimentoGenerico(String direcao, int i, int j) {
 
+		// Atualiza proximas posicoes de todos novamente.
 		proximaPosicaoTodos();
+		
+		// Verifica se o aviao ja foi movimentado uma vez.
 		if(espacoAereo[i][j].getJaMovimentado()) {
-			
+			// Nao faz nada porque ja foi movimentado
 		} else {
+			// Verifica se o aviao vai sair do espaco aereo.
 			if((espacoAereo[i][j].getProximaLinha() < 0) || (espacoAereo[i][j].getProximaLinha() >= espacoAereo.length)
 					|| (espacoAereo[i][j].getProximaColuna() < 0) || (espacoAereo[i][j].getProximaColuna() >= espacoAereo[0].length)) {
+				// Sai do espaco aereo e conta++ pra avioes que sairam.
 				espacoAereo[i][j] = null;
 				quantAvioesSairam++;
-			} else { 
+			} else {
+				// Se tiver um aviao
 				if(espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()] != null) {
 					if(espacoAereo[espacoAereo[i][j].getProximaLinha()][espacoAereo[i][j].getProximaColuna()].getTentouMudar() == 1) {
 
@@ -650,10 +608,11 @@ public class EspacoAereo {
 		}
 	}
 
-	// Metodo complementar Atualizar EA: Joga os avioes que podem, nas proximas prosicoes.
+	// Metodo complementar atualizar...(): Joga os avioes que podem, nas proximas prosicoes.
 	private void movimentarAvioes() {
 		for(int i = 0; i < espacoAereo.length; i++) {
 			for(int j = 0; j < espacoAereo[0].length; j++) {
+				
 				if(espacoAereo[i][j] != null) { // Se existir um aviao nessa posicao.
 
 					// SWITCH : usado para verificar o avanca e fazer as atualizações.
@@ -672,7 +631,7 @@ public class EspacoAereo {
 						break;
 					}
 				} else {
-					// Nada.
+					// Nao faz nada.
 				}
 			}
 		}
@@ -693,6 +652,8 @@ public class EspacoAereo {
 		// Agora atualizamos as prosicoes nos baseando no atributo avanca de cada aviao.
 		movimentarAvioes();
 	}
+	
+// --- FIM --- Metodos atualizarEspacoAereo() ----------
 
 	// Metodo para mostrar a o espaço aereo graficamente.
 	public String graficoEspacoAereo() {
@@ -701,7 +662,7 @@ public class EspacoAereo {
 			if((k) < 10) {
 				grafico += "     0" + k + "     ";
 			} else {
-				grafico += "     " + k + "      ";
+				grafico += "     " + k + "     ";
 			}
 		}
 		grafico += "\n";
@@ -747,33 +708,59 @@ public class EspacoAereo {
 	public void inserirAviao(int linha, int coluna, String direcaoVoo, boolean turbo) {
 		int combustivelMax;
 		if(espacoAereo.length >= espacoAereo[0].length) {
-			combustivelMax = espacoAereo.length+10;
+			combustivelMax = espacoAereo.length+25;
 		} else {
-			combustivelMax = espacoAereo[0].length+10;
+			combustivelMax = espacoAereo[0].length+25;
 		}
 
 		if(turbo) {
-			if((quantTotalAvioes+1) < 10) {
-				AviaoTurbo av = new AviaoTurbo(("0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna, false);
-				espacoAereo[linha][coluna] = av;
-				quantTotalAvioes++;
-			} else {
-				AviaoTurbo av = new AviaoTurbo(("" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna, false);
-				espacoAereo[linha][coluna] = av;
-				quantTotalAvioes++;
-			}
-		} else {
-			// Criando o aviao e jogando ele na matriz (espaco aereo).
-			if((quantTotalAvioes+1) < 10) {
-				Aviao av = new Aviao(("0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna);
-				espacoAereo[linha][coluna] = av;
-				quantTotalAvioes++;
-			} else {
-				Aviao av = new Aviao(("" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna);
-				espacoAereo[linha][coluna] = av;
-				quantTotalAvioes++;	
-			}
-		}
+			// Criando o aviao turbo e jogando ele na matriz (espaco aereo).
+						if(direcaoVoo.equals("DD") || direcaoVoo.equals("DC")) {
+							if((quantTotalAvioes+1) < 10) {
+								AviaoTurbo av = new AviaoTurbo((direcaoVoo + "__0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna, false);
+								espacoAereo[linha][coluna] = av;
+								quantTotalAvioes++;
+							} else {
+								AviaoTurbo av = new AviaoTurbo((direcaoVoo + "__" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna, false);
+								espacoAereo[linha][coluna] = av;
+								quantTotalAvioes++;
+							}
+						} else {
+							if((quantTotalAvioes+1) < 10) {
+								AviaoTurbo av = new AviaoTurbo((direcaoVoo + "_0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna, false);
+								espacoAereo[linha][coluna] = av;
+								quantTotalAvioes++;
+							} else {
+								AviaoTurbo av = new AviaoTurbo((direcaoVoo + "_" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna, false);
+								espacoAereo[linha][coluna] = av;
+								quantTotalAvioes++;
+							}
+						}
+					} else {
+						// Criando o aviao e jogando ele na matriz (espaco aereo).
+						if(direcaoVoo.equals("DD") || direcaoVoo.equals("DC")) {
+							if((quantTotalAvioes+1) < 10) {
+								Aviao av = new Aviao((direcaoVoo + "__0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna);
+								espacoAereo[linha][coluna] = av;
+								quantTotalAvioes++;
+							} else {
+								Aviao av = new Aviao((direcaoVoo + "__" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna);
+								espacoAereo[linha][coluna] = av;
+								quantTotalAvioes++;
+							}
+						} else {
+
+							if((quantTotalAvioes+1) < 10) {
+								Aviao av = new Aviao((direcaoVoo + "_0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna);
+								espacoAereo[linha][coluna] = av;
+								quantTotalAvioes++;
+							} else {
+								Aviao av = new Aviao((direcaoVoo + "_" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna);
+								espacoAereo[linha][coluna] = av;
+								quantTotalAvioes++;
+							}
+						}
+					}
 	}
 
 	// Metodo para retornar informacoes sobre um aviao.
@@ -790,7 +777,11 @@ public class EspacoAereo {
 				}
 			}
 		}
-		return informacao;
+		if(informacao.equals("")) {
+			return "Nao foi encontrado nenhum aviao com o seguinte id: " + id;
+		} else {
+			return informacao;
+		}
 	}
 
 	// Metodo para achar os avioes em uma determinada rota
@@ -824,7 +815,7 @@ public class EspacoAereo {
 					for(int i = coluna-linha; i < espacoAereo[0].length; i++) {
 						if((contaLinha < espacoAereo.length) || (contaColuna < espacoAereo[0].length)) {
 							if(espacoAereo[contaLinha][contaColuna] != null) {
-								informacao += espacoAereo[linha][i].getId() + "\n";
+								informacao += espacoAereo[contaLinha][contaColuna].getId() + "\n";
 							} else {
 								// Nao faz nada.
 							}
@@ -840,7 +831,7 @@ public class EspacoAereo {
 					for(int i = linha-coluna; i < espacoAereo.length; i++) {
 						if((contaLinha < espacoAereo.length) || (contaColuna < espacoAereo[0].length)) {
 							if(espacoAereo[contaLinha][contaColuna] != null) {
-								informacao += espacoAereo[linha][i].getId() + "\n";
+								informacao += espacoAereo[contaLinha][contaColuna].getId() + "\n";
 							} else {
 								// Nao faz nada.
 							}
@@ -857,6 +848,63 @@ public class EspacoAereo {
 			return "Nao foram encontrados avioes nessa rota.";
 		} else {
 			return informacao;	
+		}
+	}
+
+	// Metodo para descobrir quantos avioes ainda estao no espaco aereo.
+	public int avioesQuePermanecem() {
+		int quantidade = 0;
+		for(int i = 0; i < espacoAereo.length; i++) {
+			for(int j = 0; j < espacoAereo[0].length; j++) {
+				if(espacoAereo[i][j] != null) {
+					quantidade++;
+				}
+			}
+		}
+		return quantidade;
+	}
+
+	// Metodo para pegar o toString de um determinado aviao.
+	public String toStringDeUmAviao(String id) {
+		String toString = "";
+		for(int i = 0; i < espacoAereo.length; i++) {
+			for(int j = 0; j < espacoAereo[0].length; j++) {
+				if(espacoAereo[i][j] != null) {
+					if(espacoAereo[i][j].getId().equals(id)) {
+						toString = espacoAereo[i][j].toString();
+					}
+				}
+			}
+		}
+		
+		if(toString.equals("")) {
+			return "Nao foi encontrado nenhum aviao com o id informado.";
+		} else {
+			return toString;
+		}
+	}
+	
+	// Metodo para usar o equals() de um determinado aviao.
+	public boolean equalsDeUmAviao(String primeiroId, String segundoId) {
+		int x1 = -1, y1 = -1, x2 = -1, y2 = -1;
+		for(int i = 0; i < espacoAereo.length; i++) {
+			for(int j = 0; j < espacoAereo[0].length; j++) {
+				if(espacoAereo[i][j] != null) {
+					if(espacoAereo[i][j].getId().equals(primeiroId)) {
+						x1 = i;
+						y1 = j;
+					}
+					if(espacoAereo[i][j].getId().equals(segundoId)) {
+						x2 = i;
+						y2 = j;
+					}
+				}
+			}
+		}
+		if((x1 == -1) || (y1 == -1) || (x2 == -1) || (y2 == -1)) {
+			return false;
+		} else {
+			return espacoAereo[x1][y1].equals(espacoAereo[x2][y2]);	
 		}
 	}
 
