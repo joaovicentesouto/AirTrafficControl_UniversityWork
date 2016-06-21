@@ -14,10 +14,6 @@ public class InteracaoUsuario {
 		return Integer.parseInt(JOptionPane.showInputDialog(texto));
 	}
 	
-	public double informeDouble(String texto) {
-		return Double.parseDouble(JOptionPane.showInputDialog(texto));
-	}
-	
 	public void mostraMensagem(String texto) {
 		JOptionPane.showMessageDialog(null, texto);
 	}

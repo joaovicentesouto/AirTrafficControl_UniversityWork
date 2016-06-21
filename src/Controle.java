@@ -31,9 +31,9 @@ public class Controle {
 			do {
 				if(iu.informeInt("Deseja criar um aviao turbo?\n Digite 1: para SIM ou 2: para NAO:") == 1) {
 					ea.inserirAviao(iu.informeInt("Informe o numero da linha que deseja inserir:"), iu.informeInt("Informe o numero da coluna que deseja inserir:"),
-							iu.informeString("Digite uma das seguintes direçoes abaixo:\nRHC: para Reta Horizontal Crescente\n"
-									+ "RHD: para Reta Horizontal Decrescente\nRVC: para Reta Vertical Crescente\nRVD: para Reta Vertical Decrescente\n"
-									+ "DC: para Diagonal Crescente\nDD: para Diagonal Decrescente"), true);
+							iu.informeString("Digite uma das seguintes direçoes abaixo:\nRHC : para Reta Horizontal Crescente\n"
+									+ "RHD : para Reta Horizontal Decrescente\nRVC : para Reta Vertical Crescente\nRVD : para Reta Vertical Decrescente\n"
+									+ "DC : para Diagonal Crescente\nDD : para Diagonal Decrescente"), true);
 				} else {
 					ea.inserirAviao(iu.informeInt("Informe o numero da linha que deseja inserir:"), iu.informeInt("Informe o numero da coluna que deseja inserir:"),
 							iu.informeString("Digite uma das seguintes direçoes abaixo:\nRHC: para Reta Horizontal Crescente\n"
@@ -50,7 +50,7 @@ public class Controle {
 		for(int i = 0; i < periodoDeTempo; i++) {
 
 			// Mostra o espaco aereo
-			iu.mostraMensagem("Espaço Aereo - Tempo de execução: " + (i+1) + " de " + periodoDeTempo + "\n\n" + ea.graficoEspacoAereo());
+			iu.mostraMensagem("Espaço Aereo - Tempo de execuçao: " + (i+1) + " de " + periodoDeTempo + "\n\n" + ea.graficoEspacoAereo());
 
 			// Neste metodo acontece tudo, verifica colisao e avança os avioes.
 			ea.atualizarEspacoAereo();
@@ -92,7 +92,7 @@ public class Controle {
 						iu.mostraMensagem("Espaço aereo final\n\n" + ea.graficoEspacoAereo());
 						iu.mostraMensagem("Quantidade total de aviões criados: " + ea.getQuantTotalAvioes() + "\n"
 								+ "Quantidade de avioes que permanecem no espaco aereo: " + ea.avioesQuePermanecem() + "\n"
-								+ "Quantidade total de aviões que sairam: " + ea.getQuantAvioesSairam() + "\n\n"
+								+ "Quantidade total de avioes que sairam: " + ea.getQuantAvioesSairam() + "\n\n"
 								+ "Aviões que mudaram de rota: \n" + ea.getAvioesMudaramDirecao());
 						break;
 					case 4 : // toString()

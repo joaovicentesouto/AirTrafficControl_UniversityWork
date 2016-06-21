@@ -20,8 +20,9 @@ public class AviaoTurbo extends Aviao {
 		this.turboLigado = turboLigado;
 	}
 	
-	// Generalizei o nome para que quando eu chamar o método velocUp de qualquer avião, se ele for turbo vai aumentar mais 25%
-	// a velocidade e liga o turbo, que é algo que um avião comum só aumentar 15%, sem turbo.
+	// Generalizei o nome, como havia conversado com a professora, para que quando eu chamar
+	//o metodo velocUp (que era pra ser velocTurbo()) de qualquer aviao, se ele for turbo vai
+	//aumentar mais 25% a velocidade e liga o turbo, que é algo que um aviao comum só aumentar 15%, sem turbo.
 	public void velocUp() {
 		if(super.getVelocidade() <= 125) {
 			if((super.getVelocidade()*1.15) > 125) {
@@ -32,11 +33,11 @@ public class AviaoTurbo extends Aviao {
 				turboLigado = true;
 			}
 		} else {
-			// Não faz nada, a velocidade já está no máximo. 
+			// Nao faz nada, a velocidade já esta no maximo. 
 		}
 	}
 	
-	// Também generalizei o velocDown
+	// Tambem generalizei o velocDown
 	public void velocDown() {
 		super.setVelocidade(super.getVelocidade()*0.75);
 		turboLigado = false;
@@ -53,11 +54,13 @@ public class AviaoTurbo extends Aviao {
 		}
 	}
 
+	// toString() e equals()
 	@Override
 	public String toString() {
 		return super.toString() + "AviaoTurbo [turboLigado=" + turboLigado + "]";
 	}
 
+	// Alterado como o outro, inclusive chamo o metodo equals do super para conferir todos os outros atributos.
 	public boolean equals(AviaoTurbo aviaoT) {
 		if(super.equals(aviaoT)) {
 			if (this == aviaoT)

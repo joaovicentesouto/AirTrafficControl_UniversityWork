@@ -92,7 +92,7 @@ public class Aviao {
 		this.jaMovimentado = jaMovimentado;
 	}
 
-	// Getters e setters: Posições atuais.
+	// Getters e setters: Posiçoes atuais.
 	public int getLinhaAtual() {
 		return linhaAtual;
 	}
@@ -109,7 +109,7 @@ public class Aviao {
 		this.colunaAtual = colunaAtual;
 	}
 
-	// Getters e setters: Próximas posições.
+	// Getters e setters: Proximas posiçoes.
 	public int getProximaLinha() {
 		return proximaLinha;
 	}
@@ -126,7 +126,7 @@ public class Aviao {
 		this.proximaColuna = proximaColuna;
 	}
 
-	// Método para encontrar a próxima posição. Executado sempre que o avião for mudado para outra posição.
+	// Metodo para encontrar a proxima posiçao. Executado sempre que o aviao for mudado para outra posiçao.
 	public void proximaPosicao() {
 		switch (this.direcaoVoo) {
 		case "DC" :
@@ -157,7 +157,7 @@ public class Aviao {
 		}
 	}
 	
-	// Método para almentar a velocidade em 15%
+	// Metodo para almentar a velocidade em 15%.
 	public void velocUp() {
 		if(velocidade <= 100) {
 			if((velocidade*1.15) > 100) {
@@ -166,11 +166,11 @@ public class Aviao {
 				velocidade *= 1.15;
 			}
 		} else {
-			// Não faz nada, a velocidade já está no máximo. 
+			// Nao faz nada, a velocidade ja esta no maximo. 
 		}
 	}
 	
-	// Método para diminuir a velocidade em 15%
+	// Metodo para diminuir a velocidade em 15%.
 	public void velocDown() {
 		if(velocidade >= 10) {
 			if((velocidade*0.85) < 10) {
@@ -179,20 +179,17 @@ public class Aviao {
 				velocidade *= 0.85;
 			}
 		} else {
-			// Não faz nada, a velocidade já está no minimo.
+			// Nao faz nada, a velocidade ja esta no minimo.
 		}
 	}
 	
-	// Método consumo do combustível.
+	// Metodo consumo do combustivel.
 	public void consumoCombustivel() {
 		combustivel--;
 		if(combustivel <= 25) {
 			alertaCombustivel = true;
 			if(combustivel == 25) {
 				JOptionPane.showMessageDialog(null, "Alerta de combustivel do aviao: " + id + ".\nMenos de 25 litros para acabar.");
-			}
-			if(combustivel == 0) { // Para teste, ver se alguem ficou sem combustivel.
-				JOptionPane.showMessageDialog(null, "Ficou sem combustivel" + id);
 			}
 		}
 	}
@@ -212,6 +209,7 @@ public class Aviao {
 				+ ", alertaCombustivel=" + alertaCombustivel + ", jaMovimentado=" + jaMovimentado + "]";
 	}
 
+	// Alterei como a professora falou, dele recebr um aviao e nao um "object" para comparar.
 	public boolean equals(Aviao aviao) {
 		if (this == aviao)
 			return true;

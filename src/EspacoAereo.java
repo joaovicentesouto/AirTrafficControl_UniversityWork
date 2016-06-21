@@ -697,7 +697,7 @@ public class EspacoAereo {
 		} else {
 			combustivelMax = espacoAereo[0].length+35;
 		}
-		if((linha < espacoAereo.length) || (linha >= espacoAereo.length) || (coluna < espacoAereo[0].length) || (coluna >= espacoAereo[0].length)) {
+		if((linha < 0) || (linha >= espacoAereo.length) || (coluna < 0) || (coluna >= espacoAereo[0].length)) {
 			JOptionPane.showMessageDialog(null, "Nao foi possivel criar o aviao porque o local que foi\ninformado esta fora do limite do espaco aereo.");
 		} else {
 			if(turbo) {
