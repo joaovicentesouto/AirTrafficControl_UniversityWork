@@ -44,9 +44,9 @@ public class EspacoAereo {
 		}
 	}
 
-	// --- Metodos do randomInicialDeAvioes() ----------
+// --- Metodos do randomInicialDeAvioes() ----------
 
-	// Metodo complementar: se achar um aviao na verdical.
+// Metodo complementar random e aviao-broda: se achar um aviao na verdical.
 	private boolean aviaoNaVertical(int coluna) {
 		boolean achei = false;
 		for(int i = 0; i < espacoAereo.length; i++) {
@@ -64,7 +64,7 @@ public class EspacoAereo {
 		return achei;
 	}
 
-	// Metodo complementar: achar um aviao na horizontal.
+	// Metodo complementar random e aviao-broda: achar um aviao na horizontal.
 	private boolean aviaoNaHorizontal(int linha) {
 		boolean achei = false;
 		for(int i = 0; i < espacoAereo[0].length; i++) {
@@ -82,15 +82,15 @@ public class EspacoAereo {
 		return achei;
 	}
 
-	// Metodo complementar: achar um aviao na diagonal.
+	// Metodo complementar random e aviao-broda: achar um aviao na diagonal.
 	private boolean aviaoNaDiagonal(int linha, int coluna) {
 		boolean achei = false;
 		int contaLinha = 0, contaColuna = 0;
 		if(linha <= coluna) {
 			contaLinha = 0;
 			contaColuna = coluna-linha;
-			for(int i = coluna-linha; i < espacoAereo[0].length; i++) {
-				if((contaLinha < espacoAereo.length) || (contaColuna < espacoAereo[0].length)) {
+			for(int i = contaColuna; i < espacoAereo[0].length; i++) {
+				if((contaLinha < espacoAereo.length) && (contaColuna < espacoAereo[0].length)) {
 					if(espacoAereo[contaLinha][contaColuna] != null) {
 						if(espacoAereo[contaLinha][contaColuna].getDirecaoVoo().equals("DC") || espacoAereo[contaLinha][contaColuna].getDirecaoVoo().equals("DD")) {
 							achei = true;
@@ -110,8 +110,8 @@ public class EspacoAereo {
 		} else {
 			contaLinha = linha-coluna;
 			contaColuna = 0;
-			for(int i = linha-coluna; i < espacoAereo[0].length; i++) {
-				if((contaLinha < espacoAereo.length) || (contaColuna < espacoAereo[0].length)) {
+			for(int i = contaLinha; i < espacoAereo[0].length; i++) {
+				if((contaLinha < espacoAereo.length) && (contaColuna < espacoAereo[0].length)) {
 					if(espacoAereo[contaLinha][contaColuna] != null) {
 						if(espacoAereo[contaLinha][contaColuna].getDirecaoVoo().equals("DC") || espacoAereo[contaLinha][contaColuna].getDirecaoVoo().equals("DD")) {
 							achei = true;
@@ -266,6 +266,8 @@ public class EspacoAereo {
 				break;
 			} else { // Caso não, cria o aviao.
 
+				// A criação dos avioes está assim porque eu precisei definir como seria o nome do aviao para o grafico ficar bem feito.
+				
 				if(gerador.nextInt(2) == 0) {	// Criando aviao turbo
 					if(direcaoFinalVoo.equals("DD") || direcaoFinalVoo.equals("DC")) {
 						if((quantTotalAvioes+1) < 10) {
@@ -315,10 +317,10 @@ public class EspacoAereo {
 		}
 	}
 
-	// --- FIM --- Metodos do randomInicialDeAvioes() ----------
+// --- FIM --- Metodos do randomInicialDeAvioes() ----------
 
-	// --- Metodo entrandoAviaoBorda() ----------
-	// Usa alguns metodos do random de verificar se existem alguma aviao naquela rota com a mesma rota ou rota contraria.
+// --- Metodo entrandoAviaoBorda() ----------
+// Usa alguns metodos do random de verificar se existem alguma aviao naquela rota com a mesma rota ou rota contraria.
 
 	public void entrandoAviaoBorda() { // Mesma logica do criador random de avioes mas coloca eles nas bordas aleatoriamente.
 		Random gerador = new Random();
@@ -470,9 +472,9 @@ public class EspacoAereo {
 		}
 	}
 
-	// --- FIM --- Metodo entrandoAviaoBorda() ----------
+// --- FIM --- Metodo entrandoAviaoBorda() ----------
 
-	// --- Metodos atualizarEspacoAereo() ----------
+// --- Metodos atualizarEspacoAereo() ----------
 
 	// Metodo complementar atualizar...(): para atualizar a proxima posicao de todos os avioes.
 	private void proximaPosicaoTodos() {
@@ -652,8 +654,10 @@ public class EspacoAereo {
 		movimentarAvioes();
 	}
 
-	// --- FIM --- Metodos atualizarEspacoAereo() ----------
+// --- FIM --- Metodos atualizarEspacoAereo() ----------
 
+// --- Outros metodos, apartir daqui nao existem complementares.
+	
 	// Metodo para mostrar a o espaço aereo graficamente.
 	public String graficoEspacoAereo() {
 		String grafico = "X   |";
@@ -728,7 +732,6 @@ public class EspacoAereo {
 					quantTotalAvioes++;
 				}
 			} else {
-
 				if((quantTotalAvioes+1) < 10) {
 					Aviao av = new Aviao((direcaoVoo + "_0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna);
 					espacoAereo[linha][coluna] = av;
@@ -776,7 +779,6 @@ public class EspacoAereo {
 				}
 			}
 		} else { // Rota Vertical
-
 			if(direcao.equals("RVC") || direcao.equals("RVD")) {
 				for(int i = 0; i < espacoAereo.length; i++) {
 					if(espacoAereo[i][coluna] != null) {
@@ -786,13 +788,12 @@ public class EspacoAereo {
 					}
 				}
 			} else { // Rota Diagonal
-
 				int contaLinha, contaColuna;
 				if(linha <= coluna) {
 					contaLinha = 0;
 					contaColuna = coluna-linha;
 					for(int i = coluna-linha; i < espacoAereo[0].length; i++) {
-						if((contaLinha < espacoAereo.length) || (contaColuna < espacoAereo[0].length)) {
+						if((contaLinha < espacoAereo.length) && (contaColuna < espacoAereo[0].length)) {
 							if(espacoAereo[contaLinha][contaColuna] != null) {
 								informacao += espacoAereo[contaLinha][contaColuna].getId() + "\n";
 							} else {
@@ -808,7 +809,7 @@ public class EspacoAereo {
 					contaLinha = linha-coluna;
 					contaColuna = 0;
 					for(int i = linha-coluna; i < espacoAereo.length; i++) {
-						if((contaLinha < espacoAereo.length) || (contaColuna < espacoAereo[0].length)) {
+						if((contaLinha < espacoAereo.length) && (contaColuna < espacoAereo[0].length)) {
 							if(espacoAereo[contaLinha][contaColuna] != null) {
 								informacao += espacoAereo[contaLinha][contaColuna].getId() + "\n";
 							} else {
