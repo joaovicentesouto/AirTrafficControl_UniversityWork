@@ -207,9 +207,9 @@ public class Aviao {
 	@Override
 	public String toString() {
 		return "Aviao [velocidade=" + velocidade + ", combustivel=" + combustivel + ", linhaAtual=" + linhaAtual
-				+ ",\n colunaAtual=" + colunaAtual + ", proximaLinha=" + proximaLinha + ", proximaColuna=" + proximaColuna
-				+ ",\n tentouMudar=" + tentouMudar + ", id=" + id + ", direcaoVoo=" + direcaoVoo + ", avanca=" + avanca
-				+ ",\n alertaCombustivel=" + alertaCombustivel + ", jaMovimentado=" + jaMovimentado + "]";
+				+ ", colunaAtual=" + colunaAtual + ",\n proximaLinha=" + proximaLinha + ", proximaColuna=" + proximaColuna
+				+ ", tentouMudar=" + tentouMudar + ", id=" + id + ", direcaoVoo=" + direcaoVoo + ",\n avanca=" + avanca
+				+ ", alertaCombustivel=" + alertaCombustivel + ", jaMovimentado=" + jaMovimentado + "]";
 	}
 
 	public boolean equals(Aviao aviao) {

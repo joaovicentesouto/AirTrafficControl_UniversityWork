@@ -1,5 +1,7 @@
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 public class EspacoAereo {
 
 	private Aviao[][] espacoAereo;
@@ -695,54 +697,58 @@ public class EspacoAereo {
 		} else {
 			combustivelMax = espacoAereo[0].length+35;
 		}
-
-		if(turbo) {
-			// Criando o aviao turbo e jogando ele na matriz (espaco aereo).
-			if(direcaoVoo.equals("DD") || direcaoVoo.equals("DC")) {
-				if((quantTotalAvioes+1) < 10) {
-					AviaoTurbo av = new AviaoTurbo((direcaoVoo + "__0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna, false);
-					espacoAereo[linha][coluna] = av;
-					quantTotalAvioes++;
-				} else {
-					AviaoTurbo av = new AviaoTurbo((direcaoVoo + "__" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna, false);
-					espacoAereo[linha][coluna] = av;
-					quantTotalAvioes++;
-				}
-			} else {
-				if((quantTotalAvioes+1) < 10) {
-					AviaoTurbo av = new AviaoTurbo((direcaoVoo + "_0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna, false);
-					espacoAereo[linha][coluna] = av;
-					quantTotalAvioes++;
-				} else {
-					AviaoTurbo av = new AviaoTurbo((direcaoVoo + "_" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna, false);
-					espacoAereo[linha][coluna] = av;
-					quantTotalAvioes++;
-				}
-			}
+		if((linha < espacoAereo.length) || (linha >= espacoAereo.length) || (coluna < espacoAereo[0].length) || (coluna >= espacoAereo[0].length)) {
+			JOptionPane.showMessageDialog(null, "Nao foi possivel criar o aviao porque o local que foi\ninformado esta fora do limite do espaco aereo.");
 		} else {
-			// Criando o aviao e jogando ele na matriz (espaco aereo).
-			if(direcaoVoo.equals("DD") || direcaoVoo.equals("DC")) {
-				if((quantTotalAvioes+1) < 10) {
-					Aviao av = new Aviao((direcaoVoo + "__0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna);
-					espacoAereo[linha][coluna] = av;
-					quantTotalAvioes++;
+			if(turbo) {
+				// Criando o aviao turbo e jogando ele na matriz (espaco aereo).
+				if(direcaoVoo.equals("DD") || direcaoVoo.equals("DC")) {
+					if((quantTotalAvioes+1) < 10) {
+						AviaoTurbo av = new AviaoTurbo((direcaoVoo + "__0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna, false);
+						espacoAereo[linha][coluna] = av;
+						quantTotalAvioes++;
+					} else {
+						AviaoTurbo av = new AviaoTurbo((direcaoVoo + "__" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna, false);
+						espacoAereo[linha][coluna] = av;
+						quantTotalAvioes++;
+					}
 				} else {
-					Aviao av = new Aviao((direcaoVoo + "__" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna);
-					espacoAereo[linha][coluna] = av;
-					quantTotalAvioes++;
+					if((quantTotalAvioes+1) < 10) {
+						AviaoTurbo av = new AviaoTurbo((direcaoVoo + "_0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna, false);
+						espacoAereo[linha][coluna] = av;
+						quantTotalAvioes++;
+					} else {
+						AviaoTurbo av = new AviaoTurbo((direcaoVoo + "_" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna, false);
+						espacoAereo[linha][coluna] = av;
+						quantTotalAvioes++;
+					}
 				}
 			} else {
-				if((quantTotalAvioes+1) < 10) {
-					Aviao av = new Aviao((direcaoVoo + "_0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna);
-					espacoAereo[linha][coluna] = av;
-					quantTotalAvioes++;
+				// Criando o aviao e jogando ele na matriz (espaco aereo).
+				if(direcaoVoo.equals("DD") || direcaoVoo.equals("DC")) {
+					if((quantTotalAvioes+1) < 10) {
+						Aviao av = new Aviao((direcaoVoo + "__0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna);
+						espacoAereo[linha][coluna] = av;
+						quantTotalAvioes++;
+					} else {
+						Aviao av = new Aviao((direcaoVoo + "__" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna);
+						espacoAereo[linha][coluna] = av;
+						quantTotalAvioes++;
+					}
 				} else {
-					Aviao av = new Aviao((direcaoVoo + "_" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna);
-					espacoAereo[linha][coluna] = av;
-					quantTotalAvioes++;
+					if((quantTotalAvioes+1) < 10) {
+						Aviao av = new Aviao((direcaoVoo + "_0" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna);
+						espacoAereo[linha][coluna] = av;
+						quantTotalAvioes++;
+					} else {
+						Aviao av = new Aviao((direcaoVoo + "_" + (quantTotalAvioes+1)), 75, combustivelMax, direcaoVoo, linha, coluna);
+						espacoAereo[linha][coluna] = av;
+						quantTotalAvioes++;
+					}
 				}
 			}
 		}
+		
 	}
 
 	// Metodo para retornar informacoes sobre um aviao.
